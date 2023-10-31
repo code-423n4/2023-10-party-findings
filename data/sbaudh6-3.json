@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "sbaudh6",
+  "risk": "3",
+  "title": "Signature Replay Vulnerabilities in Smart Contracts due to missing zero address check [ OffChainSignatureValidator.sol]",
+  "issueId": 3,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/3"
+}
