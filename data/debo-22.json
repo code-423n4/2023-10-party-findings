@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "debo",
+  "risk": "2",
+  "title": "[M-09] Unchecked transfer in the PartyGovernanceNFT contract",
+  "issueId": 22,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/22"
+}
