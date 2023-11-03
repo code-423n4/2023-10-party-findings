@@ -1,5 +1,5 @@
 ## [L-01] MSG VALUE IN LOOP
-**Description**
+**Impact**
 Using msg.value inside a loop is an indication of faulty logic depending on the implemented code. 
 It can sometimes lead to loss of funds by allowing the same ETH to be used multiple times which can lead to hacks like Opyn.
 **Remediation**
@@ -9,6 +9,7 @@ It is recommended to go through the code logic to make sure other functions are 
 contracts/crowdfund/InitialETHCrowdfund.sol#L212-L212
 ```
 ## [L-02] MISSING EVENTS
+**Impact**
 Events are inheritable members of contracts. 
 When you call them, they cause the arguments to be stored in the transaction’s log — a special data structure in the blockchain.
 These logs are associated with the address of the contract which can then be used by developers and auditors to keep track of the transactions.
@@ -59,4 +60,15 @@ contracts/crowdfund/InitialETHCrowdfund.sol#L350-L370
 contracts/crowdfund/InitialETHCrowdfund.sol#L372-L435
 contracts/proposals/ProposalStorage.sol#L43-L53
 contracts/proposals/ProposalExecutionEngine.sol#L207-L223
+```
+## [L-03] FUNCTION RETURNS TYPE AND NO RETURN
+**Impact**
+This function specifies a returns keyword in the function signature but does not mention what to return anywhere in the function. 
+This forces the function to always return a default value that was specified in the signature despite the calculations inside the function.
+**Remediation**
+f you don’t need the return value of the function, do not specify returns in the function signature
+**Locations**
+```txt
+contracts/signature-validators/OffChainSignatureValidator.sol#L28-L80
+contracts/crowdfund/InitialETHCrowdfund.sol#L372-L435
 ```
