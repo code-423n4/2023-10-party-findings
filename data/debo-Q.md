@@ -109,3 +109,20 @@ contracts/party/PartyGovernanceNFT.sol#L344-L448
 contracts/party/PartyGovernance.sol#L771-L834
 contracts/party/PartyGovernance.sol#L841-L851
 ```
+## [L-06] MISSING INHERITANCE
+**Impact**
+- contracts/party/PartyGovernanceNFT.sol#L14-L501
+The contract probably intends to inherit the interface IERC721Renderer but does not do so by deriving from it. This suggests missing logic or dead code.
+The following functions matched the signatures in the interface: tokenURI, contractURI
+**Remediation**
+It is recommended to go through the contract logic and fix the missing derivations if needed.
+## [L-07] REQUIRE WITH EMPTY MESSAGE
+**Impact**
+A require statement was detected with an empty message. It takes two parameters and the message part is optional. This is shown to the user when and if the require statement evaluates to false. This message gives more information about the statement and why it gave a false response.
+**Remediation**
+It is recommended to add a descriptive message, no longer than 32 bytes, inside the require statement to give more detail to the user about why the condition failed.
+**Locations**
+```txt
+contracts/proposals/ProposalExecutionEngine.sol#L313-L313
+contracts/proposals/ProposalExecutionEngine.sol#L314-L314
+```
