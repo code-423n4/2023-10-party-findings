@@ -183,3 +183,4 @@ contracts/party/PartyGovernance.sol#L988-L988
 contracts/party/PartyGovernance.sol#L1011-L1011
 contracts/party/PartyGovernance.sol#L1086-L1086
 ```
+## [I-04] 
