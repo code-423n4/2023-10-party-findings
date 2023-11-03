@@ -183,4 +183,13 @@ contracts/party/PartyGovernance.sol#L988-L988
 contracts/party/PartyGovernance.sol#L1011-L1011
 contracts/party/PartyGovernance.sol#L1086-L1086
 ```
-## [I-04] 
+## [I-04] USE CALL INSTEAD OF TRANSFER OR SEND
+**Impact**
+The contract was found to be using transfer or send function call. 
+This is unsafe as transfer has hard coded gas budget and can fail if the user is a smart contract.
+**Remediation**
+It is recommended to use call which does not have any hardcoded gas.
+**Location**
+```txt
+contracts/crowdfund/InitialETHCrowdfund.sol#L224-L224
+```
