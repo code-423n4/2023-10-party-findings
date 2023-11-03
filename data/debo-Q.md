@@ -126,3 +126,28 @@ It is recommended to add a descriptive message, no longer than 32 bytes, inside 
 contracts/proposals/ProposalExecutionEngine.sol#L313-L313
 contracts/proposals/ProposalExecutionEngine.sol#L314-L314
 ```
+## [I-01] SIGNATURE MALLEABILITY
+**Impact**
+The function ecrecover allows you to convert a valid signature into a different valid signature without requiring knowledge of the private key. It is usually not a problem unless you use signatures to identify items or require them to be uniquely recognisable.
+Therefore, depending on the function of the code, this may lead to discrepancies and faulty logic.
+**Remediation**
+It is recommended to use OpenZeppelin’s ECDSA library that has a wrapper around ecrecover that mitigates this issue. 
+The data signer can be recovered using ECDSA.recover, and its address can be compared to verify the signature.
+**Location**
+```txt
+contracts/signature-validators/OffChainSignatureValidator.sol#L58-L58
+```
+## [I-02] HARD-CODED ADDRESS DETECTED
+-contracts/party/PartyGovernanceNFT.sol#L38-L38
+**Impact**
+The contract contains an unknown hard-coded address. 
+This address might be used for some malicious activity. 
+Please check the hard-coded address and its usage.
+These hard-coded addresses may be used everywhere throughout the code to define states and interact with the functions and external calls.
+Therefore, it is extremely crucial to ensure the correctness of these token contracts as they define various important aspects of the protocol operation.
+A misconfigured address mapping could lead to the potential loss of user funds or compromise of the contract owner depending on the function logic.
+The following hard-coded addresses were found - 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+**Remediation**
+It is required to check the address. Also, it is required to check the code of the called contract for vulnerabilities.
+Ensure that the contract validates if there's an address or a code change or test cases to validate if the address is correct.
+## [I-03] 
