@@ -19,4 +19,14 @@ contracts/crowdfund/ETHCrowdfundBase.sol#L134-L136
 contracts/crowdfund/InitialETHCrowdfund.sol#L99-L99
 contracts/proposals/ProposalExecutionEngine.sol#L107-L118
 ```
-## [G-03] 
+## [G-03] CHEAPER INEQUALITIES IN REQUIRE()
+**Impact**
+The contract was found to be performing comparisons using inequalities inside the require statement. 
+When inside the require statements, non-strict inequalities (>=, <=) are usually costlier than strict equalities (>, <).
+**Remediation**
+It is recommended to go through the code logic, and, if possible, modify the non-strict inequalities with the strict ones to save ~3 gas as long as the logic of the code is not affected.
+**Locations**
+```txt
+contracts/proposals/ProposalExecutionEngine.sol#L314-L314
+```
+## [G-04] 
