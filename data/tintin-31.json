@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "tintin",
+  "risk": "3",
+  "title": "Unsafe 1271 implementation allows for signed messages to be replayed across distinct Parties",
+  "issueId": 31,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/31"
+}
