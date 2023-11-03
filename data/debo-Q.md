@@ -214,4 +214,19 @@ contracts/proposals/SetGovernanceParameterProposal.sol#L11-L11
 contracts/proposals/SetGovernanceParameterProposal.sol#L13-L13
 contracts/proposals/SetGovernanceParameterProposal.sol#L15-L15
 ```
-## [I-06] 
+## [I-06] MISSING UNDERSCORE IN NAMING VARIABLES
+**Impact**
+Solidity style guide suggests using underscores as the prefix for non-external functions and state variables (private or internal) but the contract was not found to be following the same.
+**Remediation**
+It is recommended to use an underscore for internal and private variables and functions to be in accordance with the Solidity style guide which will also make the code much easier to read.
+**Locations**
+```txt
+contracts/party/PartyGovernanceNFT.sol#L34-L34
+contracts/party/PartyGovernanceNFT.sol#L35-L35
+contracts/party/PartyGovernanceNFT.sol#L38-L38
+contracts/party/PartyGovernance.sol#L186-L186
+contracts/party/PartyGovernance.sol#L187-L187
+contracts/proposals/ProposalStorage.sol#L39-L39
+contracts/proposals/ProposalStorage.sol#L40-L41
+```
+## [I-07] 
