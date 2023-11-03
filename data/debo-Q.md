@@ -229,4 +229,22 @@ contracts/party/PartyGovernance.sol#L187-L187
 contracts/proposals/ProposalStorage.sol#L39-L39
 contracts/proposals/ProposalStorage.sol#L40-L41
 ```
-## [I-07] 
+## [I-07] IN-LINE ASSEMBLY DETECTED
+**Impact**
+Inline assembly is a way to access the Ethereum Virtual Machine at a low level. 
+This bypasses several important safety features and checks of Solidity. 
+This should only be used for tasks that need it and if there is confidence in using it.
+Multiple vulnerabilities have been detected previously when the assembly is not properly used within the Solidity code; therefore, caution should be exercised while using them.
+**Remediation**
+Avoid using inline assembly instructions if possible because it might introduce certain issues in the code if not dealt with properly because it bypasses several safety features that are already implemented in Solidity.
+**Locations**
+```txt
+contracts/signature-validators/OffChainSignatureValidator.sol#L32-L38
+contracts/signature-validators/OffChainSignatureValidator.sol#L41-L45
+contracts/party/PartyGovernance.sol#L319-L324
+contracts/party/PartyGovernance.sol#L407-L416
+contracts/party/PartyGovernance.sol#L1158-L1162
+contracts/proposals/ProposalStorage.sol#L61-L63
+contracts/proposals/ProposalExecutionEngine.sol#L306-L312
+contracts/proposals/ProposalExecutionEngine.sol#L337-L339
+```
