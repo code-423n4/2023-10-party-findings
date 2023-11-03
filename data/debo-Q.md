@@ -92,3 +92,20 @@ The following compiler versions were detected which were too recent -
 /contracts/proposals/SetGovernanceParameterProposal.sol - 0.8.20
 /contracts/proposals/ProposalExecutionEngine.sol - 0.8.20
 ```
+## [L-05] EVENT BASED REENTRANCY
+**Impact**
+In a Re-entrancy attack, a malicious contract calls back into the calling contract before the first invocation of the function is finished. 
+This may cause the different invocations of the function to interact in undesirable ways, especially in cases where the function is updating state variables after the external calls.
+In the case of event-based Re-entrancy attacks, events are emitted after an external call leading to missing event calls.
+**Remediation**
+It is recommended to add a [Re-entrancy Guard] to the functions making external calls. 
+The functions should use a Checks-Effects-Interactions pattern. 
+The external calls should be executed at the end of the function and all the state-changing and event emits must happen before the call.
+**Locations**
+```txt
+contracts/crowdfund/ETHCrowdfundBase.sol#L339-L359
+contracts/crowdfund/ETHCrowdfundBase.sol#L366-L384
+contracts/party/PartyGovernanceNFT.sol#L344-L448
+contracts/party/PartyGovernance.sol#L771-L834
+contracts/party/PartyGovernance.sol#L841-L851
+```
