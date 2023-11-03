@@ -55,3 +55,21 @@ contracts/crowdfund/InitialETHCrowdfund.sol#L224-L224
 contracts/crowdfund/InitialETHCrowdfund.sol#L331-L331
 contracts/proposals/ProposalExecutionEngine.sol#L303-L303
 ```
+## [G-05] ARRAY LENGTH CACHING
+**Impact**
+During each iteration of the loop, reading the length of the array uses more gas than is necessary. 
+In the most favourable scenario, in which the length is read from a memory variable, storing the array length in the stack can save about 3 gas per iteration. 
+In the least favourable scenario, in which external calls are made during each iteration, the amount of gas wasted can be significant.
+**Locations**
+```txt
+The following array was detected to be used inside loop without caching it's value in memory: tokenIds.
+contracts/party/PartyGovernanceNFT.sol#L272-L301
+
+The following array was detected to be used inside loop without caching it's value in memory: govOpts.
+contracts/party/PartyGovernance.sol#L305-L307
+
+The following array was detected to be used inside loop without caching it's value in memory: votingPowers.
+contracts/crowdfund/InitialETHCrowdfund.sol#L260-L269
+```
+**Recommendations**
+Consider storing the array length of the variable before the loop and use the stored length instead of fetching it in each iteration.
