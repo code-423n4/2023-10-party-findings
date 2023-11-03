@@ -111,7 +111,7 @@ contracts/party/PartyGovernance.sol#L841-L851
 ```
 ## [L-06] MISSING INHERITANCE
 **Impact**
-- contracts/party/PartyGovernanceNFT.sol#L14-L501
+`contracts/party/PartyGovernanceNFT.sol#L14-L501`
 The contract probably intends to inherit the interface IERC721Renderer but does not do so by deriving from it. This suggests missing logic or dead code.
 The following functions matched the signatures in the interface: tokenURI, contractURI
 **Remediation**
@@ -138,7 +138,7 @@ The data signer can be recovered using ECDSA.recover, and its address can be com
 contracts/signature-validators/OffChainSignatureValidator.sol#L58-L58
 ```
 ## [I-02] HARD-CODED ADDRESS DETECTED
--contracts/party/PartyGovernanceNFT.sol#L38-L38
+`contracts/party/PartyGovernanceNFT.sol#L38-L38`
 **Impact**
 The contract contains an unknown hard-coded address. 
 This address might be used for some malicious activity. 
@@ -150,4 +150,36 @@ The following hard-coded addresses were found - 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEe
 **Remediation**
 It is required to check the address. Also, it is required to check the code of the called contract for vulnerabilities.
 Ensure that the contract validates if there's an address or a code change or test cases to validate if the address is correct.
-## [I-03] 
+## [I-03] BLOCK VALUES AS A PROXY FOR TIME
+**Impact**
+Contracts often need access to time values to perform certain types of functionality. 
+Values such as block.timestamp and block.number can be used to determine the current time or the time delta. 
+However, they are not recommended for most use cases.
+For block.number, as Ethereum block times are generally around 14 seconds, the delta between blocks can be predicted. 
+The block times, on the other hand, do not remain constant and are subject to change for a number of reasons, e.g., fork reorganisations and the difficulty bomb.
+Due to variable block times, block.number should not be relied on for precise calculations of time.
+**Remediation**
+It is recommended to use trusted external time sources, block numbers instead of timestamps, and/or utilising multiple time sources to increase reliability. 
+These practices can help mitigate risks of timestamp manipulation and inaccurate timing, increasing the reliability and security of the smart contract.
+**Locations**
+```txt
+contracts/crowdfund/ETHCrowdfundBase.sol#L163-L163
+contracts/crowdfund/ETHCrowdfundBase.sol#L185-L185
+contracts/party/PartyGovernanceNFT.sol#L361-L361
+contracts/party/PartyGovernanceNFT.sol#L372-L372
+contracts/signature-validators/OffChainSignatureValidator.sol#L59-L59
+contracts/party/PartyGovernance.sol#L565-L565
+contracts/party/PartyGovernance.sol#L622-L622
+contracts/party/PartyGovernance.sol#L651-L651
+contracts/party/PartyGovernance.sol#L731-L731
+contracts/party/PartyGovernance.sol#L734-L734
+contracts/party/PartyGovernance.sol#L737-L737
+contracts/party/PartyGovernance.sol#L745-L745
+contracts/party/PartyGovernance.sol#L811-L811
+contracts/party/PartyGovernance.sol#L813-L813
+contracts/party/PartyGovernance.sol#L820-L820
+contracts/party/PartyGovernance.sol#L954-L954
+contracts/party/PartyGovernance.sol#L988-L988
+contracts/party/PartyGovernance.sol#L1011-L1011
+contracts/party/PartyGovernance.sol#L1086-L1086
+```
