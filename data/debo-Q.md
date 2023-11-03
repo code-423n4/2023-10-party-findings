@@ -72,3 +72,23 @@ f you don’t need the return value of the function, do not specify returns in t
 contracts/signature-validators/OffChainSignatureValidator.sol#L28-L80
 contracts/crowdfund/InitialETHCrowdfund.sol#L372-L435
 ```
+## [L-04] COMPILER VERSION TOO RECENT
+**Impact**
+The compiler version detected in the code is too recent. 
+Therefore, it is not time-tested and may be susceptible to multiple bugs and vulnerabilities, both from the usage and security perspectives. 
+**Remediation**
+It is suggested to use a compiler version that is neither too recent nor too old i.e., Solidity 0.8.18. 
+A stable compiler version should be used that is time-tested by the community, which fixed vulnerabilities introduced in older compiler versions.
+**Locations**
+```txt
+The following compiler versions were detected which were too recent - 
+/contracts/crowdfund/ETHCrowdfundBase.sol - 0.8.20
+/contracts/party/PartyGovernanceNFT.sol - 0.8.20
+/contracts/signature-validators/OffChainSignatureValidator.sol - 0.8.20
+/contracts/party/PartyGovernance.sol - 0.8.20
+/contracts/crowdfund/InitialETHCrowdfund.sol - 0.8.20
+/contracts/proposals/SetSignatureValidatorProposal.sol - 0.8.20
+/contracts/proposals/ProposalStorage.sol - 0.8.20
+/contracts/proposals/SetGovernanceParameterProposal.sol - 0.8.20
+/contracts/proposals/ProposalExecutionEngine.sol - 0.8.20
+```
