@@ -193,3 +193,25 @@ It is recommended to use call which does not have any hardcoded gas.
 ```txt
 contracts/crowdfund/InitialETHCrowdfund.sol#L224-L224
 ```
+## [I-05] MISSING INDEXED KEYWORDS IN EVENTS
+**Impact**
+Events are essential for tracking off-chain data and when the event paraemters are indexed they can be used as filter options which will help getting only the specific data instead of all the logs.
+**Remediation**
+Consider adding indexed keyword to crucial event parameters that could be used in off-chain tracking. 
+Do remember that the indexed keyword costs more gas.
+**Locations**
+```txt
+contracts/crowdfund/ETHCrowdfundBase.sol#L84-L84
+contracts/party/PartyGovernanceNFT.sol#L29-L29
+contracts/party/PartyGovernanceNFT.sol#L30-L30
+contracts/party/PartyGovernanceNFT.sol#L31-L31
+contracts/party/PartyGovernance.sol#L144-L144
+contracts/party/PartyGovernance.sol#L145-L145
+contracts/party/PartyGovernance.sol#L146-L146
+contracts/party/PartyGovernance.sol#L152-L156
+contracts/party/PartyGovernance.sol#L158-L158
+contracts/proposals/SetGovernanceParameterProposal.sol#L11-L11
+contracts/proposals/SetGovernanceParameterProposal.sol#L13-L13
+contracts/proposals/SetGovernanceParameterProposal.sol#L15-L15
+```
+## [I-06] 
