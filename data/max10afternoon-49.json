@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "max10afternoon",
+  "risk": "3",
+  "title": "Missing onlyInitialize() modifier on ProposalExecutionEngine, enables anyone to reinitialize the contract",
+  "issueId": 49,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/49"
+}
