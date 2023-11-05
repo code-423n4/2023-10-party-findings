@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "C0D30",
+  "risk": "2",
+  "title": "batchContribute() function in the InitialETHCrowdfund.sol, refund to user, call instead of transfer should be used - user won't get a refund if gas changes",
+  "issueId": 61,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/61"
+}
