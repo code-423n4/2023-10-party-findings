@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "unix515",
+  "risk": "2",
+  "title": "rageQuit does not work with fee-on-transfer token",
+  "issueId": 63,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/63"
+}
