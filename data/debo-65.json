@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "debo",
+  "risk": "2",
+  "title": "[M-18] Ability to validate a signature in the ProposalExecutionEngine contract",
+  "issueId": 65,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/65"
+}
