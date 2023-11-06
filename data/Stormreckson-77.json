@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Stormreckson",
+  "risk": "2",
+  "title": "The remaining Eth transfered during `batchRefund` will be locked in the contract if `revertOnFailure` is set to false.",
+  "issueId": 77,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/77"
+}
