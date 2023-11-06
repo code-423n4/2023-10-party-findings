@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "rvierdiiev",
+  "risk": "3",
+  "title": "Attacker can steal user's votes",
+  "issueId": 72,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/72"
+}
