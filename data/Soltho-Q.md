@@ -1,4 +1,4 @@
-# OffChainSignatureValidator::isValidSignature is a view function that can revertn
+# OffChainSignatureValidator::isValidSignature is a view function that can revert
 
 In Solidity, the `view` and `pure` function modifiers are used to indicate that a function does not modify the state of the contract. These functions are intended for querying data and should not have any side effects. 
 
