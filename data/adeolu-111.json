@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "if `fundingSplitBps` is 100%, convertVotingPowerToContribution() will revert",
+  "issueId": 111,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/111"
+}
