@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Weed0607",
+  "risk": "2",
+  "title": "The voting power that a user receives can be smaller than the corresponding one to the ETH the user provided.",
+  "issueId": 110,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/110"
+}
