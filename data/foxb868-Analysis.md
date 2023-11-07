@@ -247,5 +247,7 @@ Beyond the core protocol, integrations with external contracts like NFT platform
 
 
 
+
+
 ### Time spent:
-34 hours
+11 hours
