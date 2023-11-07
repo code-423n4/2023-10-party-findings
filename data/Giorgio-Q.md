@@ -32,3 +32,61 @@ Delete misleading comments :
     /// @param args The arguments to pass to each `contribute()` call.
     /// @return votingPowers The voting power received for each contribution.
 ```
+
+## Missing checks for `fundingSplitBps`
+
+## Description
+
+There are no checks that prevent `fundingSplitBps` value from being higher than 1e4 during the initialization of the contract in `ETHCrowdfundBase.sol`. If the `fundingSplitBps` value  > 1e4 the contract wouldn't be able to process contribution. 
+## Links
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L167-L168
+
+## Fix
+
+```
+if(fundingSplitBps > 1e4) {
+revert invalidFundingSplitBps();
+}
+```
+
+## If `fundingSplitBps` == 1e4 `convertVotingPowerToContribution()` fails
+
+## Description
+
+In the `convertVotingPowerToContribution()` of the `ETHCrowdfundBase()` contract the view function will fail if the  `fundingSplitBps` = 1e4. This is because it should be theoritically impossible to have voting power if the `fundingSplitBps` is set to 1e4. 
+
+```
+        if (fundingSplitRecipient_ != address(0) && fundingSplitBps_ > 0) {
+            amount = (amount * 1e4) / (1e4 - fundingSplitBps_);
+        }
+```
+
+## Links
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L278-L289
+
+## Fix
+
+We could prevent the function from failing if we first check the `fundingSplitRecipient`. 
+
+```
+
+    function convertVotingPowerToContribution(
+        uint96 votingPower
+    ) public view returns (uint96 amount) {
+         uint16 fundingSplitBps_ = fundingSplitBps;
+     @> if(fundingSplitBps == 1e4) {
+         return 0;
+        }
+        amount = (votingPower * 1e4) / exchangeRateBps;
+
+        // Add back funding split to contribution amount if applicable.
+        
+        address payable fundingSplitRecipient_ = fundingSplitRecipient;
+        
+        if (fundingSplitRecipient_ != address(0) && fundingSplitBps_ > 0) {
+            amount = (amount * 1e4) / (1e4 - fundingSplitBps_);
+        }
+    }
+```
+
