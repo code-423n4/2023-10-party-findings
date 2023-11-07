@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Malicious Party contracts can set low thresholds, approving invalid signatures.",
+  "issueId": 91,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/91"
+}
