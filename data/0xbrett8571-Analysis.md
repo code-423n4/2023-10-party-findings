@@ -411,5 +411,7 @@ The Party Protocol demonstrates well-designed modular architecture and has taken
 
 
 
+
+
 ### Time spent:
-30 hours
+44 hours
