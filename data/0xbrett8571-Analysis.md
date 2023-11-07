@@ -409,5 +409,7 @@ To improve:
 
 The Party Protocol demonstrates well-designed modular architecture and has taken care to limit risk surface area. A few areas of concern exist around voting power tracking complexity and privilege levels of roles like authorities.
 
+
+
 ### Time spent:
-15 hours
+30 hours
