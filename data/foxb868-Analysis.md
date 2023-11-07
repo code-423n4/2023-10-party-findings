@@ -245,5 +245,7 @@ No major systemic issues identified with the core mechanisms like voting and dis
 
 Beyond the core protocol, integrations with external contracts like NFT platforms carry additional risks and trust assumptions. I'd recommend thoroughly reviewing the related proposal types is recommended.
 
+
+
 ### Time spent:
-5 hours
+34 hours
