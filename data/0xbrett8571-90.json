@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Malicious ERC721 contracts can exploit the voting power and ownership transfer disconnect.",
+  "issueId": 90,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/90"
+}
