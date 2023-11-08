@@ -554,3 +554,234 @@ VS Code.
 Avoid using the assembly function, unless it is necessary, and you know how to use it.
 Do not use more than one dynamic type in `abi.encodePacked()`.
 Use `abi.encode()`, preferably.
+## [L-13] Dubious typecast in PartyGovernanceNFT contract
+## Impact
+The dubious typecast in `PartyGovernanceNFT.rageQuit` function is the casting of `tokenIds` (which is a uint256) to uint96 in line 401: `uint96 totalVotingPowerBurned = _burnAndUpdateVotingPower(tokenIds, !isAuthority_);`. 
+This could potentially lead to truncation issues if the `tokenIds` exceeds the maximum value that can be held by uint96.
+So, the wrong tokenIDs could be processed.
+**Location**
+```txt
+Dubious typecast in PartyGovernanceNFT.rageQuit(uint256[],IERC20[],uint256[],address) (contracts/party/PartyGovernanceNFT.sol#344-448):
+```
+```sol
+    function rageQuit(
+        uint256[] calldata tokenIds,
+        IERC20[] calldata withdrawTokens,
+        uint256[] calldata minWithdrawAmounts,
+        address receiver
+    ) external {
+        if (tokenIds.length == 0) revert NothingToBurnError();
+
+
+        // Check if called by an authority.
+        bool isAuthority_ = isAuthority[msg.sender];
+
+
+        // Check if ragequit is allowed.
+        uint40 currentRageQuitTimestamp = rageQuitTimestamp;
+        if (!isAuthority_) {
+            if (currentRageQuitTimestamp != ENABLE_RAGEQUIT_PERMANENTLY) {
+                if (
+                    currentRageQuitTimestamp == DISABLE_RAGEQUIT_PERMANENTLY ||
+                    currentRageQuitTimestamp < block.timestamp
+                ) {
+                    revert CannotRageQuitError(currentRageQuitTimestamp);
+                }
+            }
+        }
+
+
+        // Used as a reentrancy guard. Will be updated back after ragequit.
+        rageQuitTimestamp = DISABLE_RAGEQUIT_PERMANENTLY;
+
+
+        // Update last rage quit timestamp.
+        lastRageQuitTimestamp = uint40(block.timestamp);
+
+
+        // Sum up total amount of each token to withdraw.
+        uint256[] memory withdrawAmounts = new uint256[](withdrawTokens.length);
+        {
+            IERC20 prevToken;
+            for (uint256 i; i < withdrawTokens.length; ++i) {
+                // Check if order of tokens to transfer is valid.
+                // Prevent null and duplicate transfers.
+                if (prevToken >= withdrawTokens[i]) revert InvalidTokenOrderError();
+
+
+                prevToken = withdrawTokens[i];
+
+
+                // Check token's balance.
+                uint256 balance = address(withdrawTokens[i]) == ETH_ADDRESS
+                    ? address(this).balance
+                    : withdrawTokens[i].balanceOf(address(this));
+
+
+                // Add fair share of tokens from the party to total.
+                for (uint256 j; j < tokenIds.length; ++j) {
+                    // Must be retrieved before burning the token.
+                    withdrawAmounts[i] += (balance * getVotingPowerShareOf(tokenIds[j])) / 1e18;
+                }
+            }
+        }
+        {
+            // Burn caller's party cards. This will revert if caller is not the
+            // the owner or approved for any of the card they are attempting to
+            // burn, not an authority, or if there are duplicate token IDs.
+            uint96 totalVotingPowerBurned = _burnAndUpdateVotingPower(tokenIds, !isAuthority_);
+
+
+            // Update total voting power of party.
+            _getSharedProposalStorage().governanceValues.totalVotingPower -= totalVotingPowerBurned;
+        }
+        {
+            uint16 feeBps_ = feeBps;
+            for (uint256 i; i < withdrawTokens.length; ++i) {
+                IERC20 token = withdrawTokens[i];
+                uint256 amount = withdrawAmounts[i];
+
+
+                // Take fee from amount.
+                uint256 fee = (amount * feeBps_) / 1e4;
+
+
+                if (fee > 0) {
+                    amount -= fee;
+
+
+                    // Transfer fee to fee recipient.
+                    if (address(token) == ETH_ADDRESS) {
+                        payable(feeRecipient).transferEth(fee);
+                    } else {
+                        token.compatTransfer(feeRecipient, fee);
+                    }
+                }
+
+
+                if (amount > 0) {
+                    uint256 minAmount = minWithdrawAmounts[i];
+
+
+                    // Check amount is at least minimum.
+                    if (amount < minAmount) {
+                        revert BelowMinWithdrawAmountError(amount, minAmount);
+                    }
+
+
+                    // Transfer token from party to recipient.
+                    if (address(token) == ETH_ADDRESS) {
+                        payable(receiver).transferEth(amount);
+                    } else {
+                        token.compatTransfer(receiver, amount);
+                    }
+                }
+            }
+        }
+
+
+        // Update ragequit timestamp back to before.
+        rageQuitTimestamp = currentRageQuitTimestamp;
+
+
+        emit RageQuit(msg.sender, tokenIds, withdrawTokens, receiver);
+    }
+```
+```sol
+// Ln 401
+uint96 totalVotingPowerBurned = _burnAndUpdateVotingPower(tokenIds, !isAuthority_);
+```
+## Proof of Concept
+**Exploit of rageQuit function in foundry**
+The setting of tokenIds to the maximum value for unit256 of `type(max).unit256` this will cause the tokeIds to be truncated or shortened to uint96, which will cause unpredictable behaviour in the backend.  
+Because of the dubious data type casting which truncates or shortens the tokenIds within the processing on the following line 401: `uint96 totalVotingPowerBurned = _burnAndUpdateVotingPower(tokenIds, !isAuthority_);`
+```sol
+function testRageQuit_single() external {
+        (Party party, , ) = partyAdmin.createParty(
+            partyImpl,
+            PartyAdmin.PartyCreationMinimalOptions({
+                host1: address(this),
+                host2: address(0),
+                passThresholdBps: 5100,
+                totalVotingPower: 100,
+                preciousTokenAddress: address(toadz),
+                preciousTokenId: 1,
+                rageQuitTimestamp: 0,
+                feeBps: 0,
+                feeRecipient: payable(0)
+            })
+        );
+
+        vm.prank(address(this));
+        party.setRageQuit(uint40(block.timestamp) + 1);
+
+        address recipient = _randomAddress();
+        vm.prank(address(partyAdmin));
+        uint256 tokenId = party.mint(recipient, 10, recipient);
+
+        vm.deal(address(party), 1 ether);
+
+        IERC20[] memory tokens = new IERC20[](4);
+        tokens[0] = IERC20(address(new DummyERC20()));
+        tokens[1] = IERC20(address(new DummyERC20()));
+        tokens[2] = IERC20(address(new DummyERC20()));
+        tokens[3] = IERC20(ETH_ADDRESS);
+
+        // Sort the addresses from lowest to highest.
+        for (uint256 i; i < tokens.length; ++i) {
+            for (uint256 j = 0; j < tokens.length - i - 1; j++) {
+                if (address(tokens[j]) > address(tokens[j + 1])) {
+                    IERC20 temp = tokens[j];
+                    tokens[j] = tokens[j + 1];
+                    tokens[j + 1] = temp;
+                }
+            }
+        }
+
+        uint256[] memory minWithdrawAmounts = new uint256[](1);
+        minWithdrawAmounts[0] = uint256(115792089237316195423570985008687907853269984665640564039457584007913129639935);
+        uint96[] memory balances = new uint96[](3);
+        for (uint256 i; i < balances.length; ++i) {
+            balances[i] = uint96(_randomRange(10, type(uint96).max));
+            DummyERC20(address(tokens[i])).deal(address(party), balances[i]);
+        }
+
+        uint256[] memory tokenIds = new uint256[](1);
+        tokenIds[0] = uint256(115792089237316195423570985008687907853269984665640564039457584007913129639935);
+
+        vm.prank(recipient);
+        party.rageQuit(tokenIds, tokens, minWithdrawAmounts, recipient);
+
+        // Check token burned and voting power removed.
+        assertEq(party.votingPowerByTokenId(tokenId), 0);
+        assertEq(party.mintedVotingPower(), 0);
+        assertEq(party.getGovernanceValues().totalVotingPower, 90);
+
+        // Check that ETH has been moved correctly.
+        assertEq(payable(recipient).balance, 0.1 ether);
+        assertEq(payable(address(party)).balance, 0.9 ether);
+
+        // Checks that all tokens have been moved correctly.
+        for (uint256 i; i < balances.length; ++i) {
+            uint256 balance = balances[i];
+            uint256 expectedRecipientBalance = balance / 10;
+
+            // Check the balances of the recipient and the party contract.
+            assertEq(tokens[i].balanceOf(address(party)), balance - expectedRecipientBalance);
+            assertEq(tokens[i].balanceOf(recipient), expectedRecipientBalance);
+        }
+    }
+```
+**Terminal**
+```zsh
+forge test -vv --match-path  "/Users/williamsmith/Downloads/2023-10-party/test/party/PartyGovernanceNFT.t.sol" --match-test "testRageQuit_single" --fork-url https://eth-mainnet.g.alchemy.com/v2/RPC_URL --optimizer-runs=1
+```
+```log
+test/party/PartyGovernanceNFT.t.sol
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+To mitigate this, you could use a larger data type for line 401 `uint96 totalVotingPowerBurned` such as `uint256 totalVotingPowerBurned`, 
+which can hold the full range of `tokenIds` values. 
+So it can hold the full range of `tokenIds` values without any risk of truncation.
