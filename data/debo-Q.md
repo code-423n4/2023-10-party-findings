@@ -428,3 +428,129 @@ This is because the `_GLOBALS` variable in `ProposalExecutionEngine` is shadowin
 VS Code.
 ## Recommended Mitigation Steps
 To avoid this, you should rename one of the _GLOBALS variables to a different name.
+## [L-12] Use of assembly and encode packed in offchain
+## Impact
+Assembly function in Solidity omits several security features of the language,
+therefore it is very error-prone.
+**Error-Prone Syntax** 
+Assembly code typically involves low-level operations and requires a deep understanding of the EVM's architecture. 
+It's easy to make syntax errors or misunderstand the behaviour of specific opcodes, leading to subtle bugs and vulnerabilities in the contract code.
+Also detected collision due to dynamic type usages in `abi.encodePacked`.
+## Proof of Concept
+**Vulnerable encode packed collision**
+```sol
+// Ln 48-52
+        bytes memory encodedPacket = abi.encodePacked(
+            "\x19Ethereum Signed Message:\n",
+            Strings.toString(message.length),
+            message
+        );
+```
+**Vulnerable assembly code**
+```sol
+// Ln 32-45
+        assembly {
+            // First word of signature after size contains r
+            r := mload(add(signature, 0x20))
+            s := mload(add(signature, 0x40))
+            // v is one byte which starts after s. type is uint8 so extra data will be ignored
+            v := mload(add(signature, 0x41))
+        }
+
+
+        bytes memory message;
+        assembly {
+            // Raw message data begins after v. Overwriting part of s and v with size of `message`
+            message := add(signature, 0x41)
+            mstore(message, sub(mload(signature), 0x41))
+        }
+```
+**Vulnerable isValidSignature function to inline assembly and encode packed collision**
+```sol
+// Ln 28-80
+    function isValidSignature(bytes32 hash, bytes memory signature) external view returns (bytes4) {
+        uint8 v;
+        bytes32 r;
+        bytes32 s;
+        assembly {
+            // First word of signature after size contains r
+            r := mload(add(signature, 0x20))
+            s := mload(add(signature, 0x40))
+            // v is one byte which starts after s. type is uint8 so extra data will be ignored
+            v := mload(add(signature, 0x41))
+        }
+
+
+        bytes memory message;
+        assembly {
+            // Raw message data begins after v. Overwriting part of s and v with size of `message`
+            message := add(signature, 0x41)
+            mstore(message, sub(mload(signature), 0x41))
+        }
+
+
+        // Recreate the message pre-hash from the raw data
+        bytes memory encodedPacket = abi.encodePacked(
+            "\x19Ethereum Signed Message:\n",
+            Strings.toString(message.length),
+            message
+        );
+        if (keccak256(encodedPacket) != hash) {
+            revert MessageHashMismatch();
+        }
+
+
+        Party party = Party(payable(msg.sender));
+        address signer = ecrecover(hash, v, r, s);
+        uint96 signerVotingPowerBps = party.getVotingPowerAt(signer, uint40(block.timestamp)) *
+            10000;
+
+
+        if (signerVotingPowerBps == 0 && party.balanceOf(signer) == 0) {
+            // Must own a party card or be delegatated voting power
+            revert NotMemberOfParty();
+        }
+
+
+        uint96 totalVotingPower = party.getGovernanceValues().totalVotingPower;
+        uint96 thresholdBps = signingThersholdBps[party];
+
+
+        // Either threshold is 0 or signer votes above threshold
+        if (
+            thresholdBps == 0 ||
+            (signerVotingPowerBps > totalVotingPower &&
+                signerVotingPowerBps / totalVotingPower >= thresholdBps)
+        ) {
+            return IERC1271.isValidSignature.selector;
+        }
+
+
+        revert InsufficientVotingPower();
+    }
+```
+**Exploit for inline assembly and encode packed collision in foundry**
+```sol
+ function testAssembly() external {
+
+        bytes memory signature = bytes("0xh3xh3xh3xh3xh3xh3xh3xh3xh3xh3x");
+        
+        vm.prank(address(party));
+        offChainGlobalValidator.isValidSignature(bytes32("0xh3xh3xh3xh3xh3xh3xh3xh3xh3xh3x"), signature);
+
+   }
+```
+**Bash**
+```bash
+forge test --match-contract "OffChainSignatureValidator.t" --match-test "testAssembly" --fork-url https://eth-mainnet.g.alchemy.com/v2/RPC_URL -vv --optimizer-runs=200
+```
+**Log**
+```log
+test/signature-validators/OffChainSignatureValidator.t.sol:14:1:
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+Avoid using the assembly function, unless it is necessary, and you know how to use it.
+Do not use more than one dynamic type in `abi.encodePacked()`.
+Use `abi.encode()`, preferably.
