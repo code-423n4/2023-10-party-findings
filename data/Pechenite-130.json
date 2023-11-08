@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "3",
+  "title": "If `PartyGovernanceNFT.sol#increaseVotingPower()` is called for particular user, he will end up with an unfair/more amount of ethers after `PartyGovernanceNFT.sol#rageQuit()` function execution. This will also lead to a state where `PartyGovernanceNFT` contract does not have enough balance for the last users calling `PartyGovernanceNFT.sol#rageQuit()`.",
+  "issueId": 130,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/130"
+}
