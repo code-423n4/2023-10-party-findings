@@ -979,3 +979,50 @@ if (lastRageQuitBlockNumber <= block.number) {
 }
 ```
 In this revised code, `lastRageQuitBlockNumber` is compared to the current block number, which is much harder for an attacker to manipulate.
+## [L-16] Shadowing state variable
+## Impact
+The `_GLOBALS` state variable in `PartyGovernanceNFT` contract is shadowing the `_GLOBALS` state variable in `PartyGovernance` contract. 
+This means that the `_GLOBALS` variable in the `PartyGovernanceNFT` contract hides the `_GLOBALS` variable in the `PartyGovernance` contract.
+## Proof of Concept
+Here is a simple proof of concept (POC) to demonstrate this:
+```sol
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.8.20;
+
+contract PartyGovernance {
+    IGlobals private _GLOBALS;
+
+    constructor(IGlobals globals) {
+        _GLOBALS = globals;
+    }
+
+    function getGlobals() public view returns (IGlobals) {
+        return _GLOBALS;
+    }
+}
+
+contract PartyGovernanceNFT is PartyGovernance {
+    IGlobals private _GLOBALS;
+
+    constructor(IGlobals globals) PartyGovernance(globals) {
+        _GLOBALS = globals;
+    }
+
+    function getGlobals() public view returns (IGlobals) {
+        return _GLOBALS;
+    }
+}
+```
+In this POC, if you call the `getGlobals()` function on an instance of `PartyGovernanceNFT`, it will return the `_GLOBALS` variable from the `PartyGovernanceNFT` contract, not the `_GLOBALS` variable from the `PartyGovernance` contract. 
+This is because the `_GLOBALS` variable in `PartyGovernanceNFT` is shadowing the `_GLOBALS` variable in `PartyGovernance`.
+**Location**
+```sol
+// Ln contracts/party/PartyGovernance.sol#L191
+    IGlobals private immutable _GLOBALS;
+// Ln contracts/party/PartyGovernanceNFT.sol#L42
+    IGlobals private immutable _GLOBALS;
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+To avoid this, you should rename one of the _GLOBALS variables to a different name.
