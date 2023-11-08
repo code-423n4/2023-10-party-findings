@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "3",
+  "title": "Wrong type casting leads to unsigned integer underflow exception in `ETHCrowdfundBase.sol_initialize()`",
+  "issueId": 137,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/137"
+}
