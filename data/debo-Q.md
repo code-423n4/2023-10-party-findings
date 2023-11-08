@@ -378,3 +378,53 @@ test/party/PartyGovernanceNFT.t.sol
 VS Code.
 ## Recommended Mitigation Steps
 Use OpenZeppelin SafeERC20's safetransfer and safetransferFrom functions.
+## [L-11] Shadowing State Variable ProposalExecutionEngine
+## Impact
+The `_GLOBALS` state variable in `ProposalExecutionEngine` contract is shadowing the `_GLOBALS` state variable in `ListOnZoraProposal` and `ListOnOpenseaAdvancedProposal` contracts. 
+This means that the `_GLOBALS` variable in the `ProposalExecutionEngine` contract hides the `_GLOBALS` variable in the `ListOnZoraProposal` and `ListOnOpenseaAdvancedProposal` contracts.
+## Proof of Concept
+Here is a simple proof of concept (POC) to demonstrate this:
+```sol
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.8.20;
+
+contract ListOnZoraProposal {
+    IGlobals private _GLOBALS;
+
+    constructor(IGlobals globals) {
+        _GLOBALS = globals;
+    }
+
+    function getGlobals() public view returns (IGlobals) {
+        return _GLOBALS;
+    }
+}
+
+contract ProposalExecutionEngine is ListOnZoraProposal {
+    IGlobals private _GLOBALS;
+
+    constructor(IGlobals globals) ListOnZoraProposal(globals) {
+        _GLOBALS = globals;
+    }
+
+    function getGlobals() public view returns (IGlobals) {
+        return _GLOBALS;
+    }
+}
+```
+In this POC, if you call the `getGlobals()` function on an instance of `ProposalExecutionEngine`, it will return the `_GLOBALS` variable from the `ProposalExecutionEngine` contract, not the `_GLOBALS` variable from the `ListOnZoraProposal` contract. 
+This is because the `_GLOBALS` variable in `ProposalExecutionEngine` is shadowing the `_GLOBALS` variable in `ListOnZoraProposal`.
+**Location**
+```sol
+// Ln contracts/proposals/ProposalExecutionEngine.sol#101
+     IGlobals private immutable _GLOBALS;
+  // Shadows the following:
+     // Ln contracts/proposals/ListOnZoraProposal.sol#57
+          IGlobals private immutable _GLOBALS;
+     // Ln contracts/proposals/ListOnOpenseaAdvancedProposal.sol#113
+          IGlobals private immutable _GLOBALS;
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+To avoid this, you should rename one of the _GLOBALS variables to a different name.
