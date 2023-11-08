@@ -785,3 +785,84 @@ VS Code.
 To mitigate this, you could use a larger data type for line 401 `uint96 totalVotingPowerBurned` such as `uint256 totalVotingPowerBurned`, 
 which can hold the full range of `tokenIds` values. 
 So it can hold the full range of `tokenIds` values without any risk of truncation.
+## [L-14] Use of dangerous strict equality
+## Impact
+The strict equality check `lastSnap.timestamp == snap.timestamp` in the `_insertVotingPowerSnapshot` function of the `PartyGovernance` contract could potentially be manipulated by an attacker. 
+This is because the timestamp can be influenced by miners to some degree.
+## Proof of Concept
+Here is a simple proof of concept (POC) to demonstrate this:
+```sol
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.8.20;
+
+contract PartyGovernance {
+    struct VotingPowerSnapshot {
+        uint96 votingPower;
+        uint40 timestamp;
+    }
+
+    mapping(address => VotingPowerSnapshot[]) public votingPowerSnapshots;
+
+    function _insertVotingPowerSnapshot(address voter, VotingPowerSnapshot memory snap) internal {
+        VotingPowerSnapshot[] storage snapshots = votingPowerSnapshots[voter];
+        VotingPowerSnapshot storage lastSnap = snapshots[snapshots.length - 1];
+
+        if (lastSnap.timestamp == snap.timestamp) {
+            lastSnap.votingPower = snap.votingPower;
+        } else {
+            snapshots.push(snap);
+        }
+    }
+}
+```
+In this POC, an attacker could potentially manipulate the timestamp to make the condition `lastSnap.timestamp == snap.timestamp true`, 
+and thus execute the code inside the if statement.
+**Location**
+```sol
+PartyGovernance._insertVotingPowerSnapshot(address,PartyGovernance.VotingPowerSnapshot) (contracts/party/PartyGovernance.sol#1021-1041) uses a dangerous strict equality: 
+- lastSnap.timestamp == snap.timestamp (contracts/party/PartyGovernance.sol#1035)
+```
+**Vulnerable line of code**
+```sol
+// Ln 1035
+            if (lastSnap.timestamp == snap.timestamp) {
+```
+**Vulnerable function**
+```sol
+// Ln 1021-1041
+    function _insertVotingPowerSnapshot(address voter, VotingPowerSnapshot memory snap) private {
+        emit PartyVotingSnapshotCreated(
+            voter,
+            snap.timestamp,
+            snap.delegatedVotingPower,
+            snap.intrinsicVotingPower,
+            snap.isDelegated
+        );
+
+
+        VotingPowerSnapshot[] storage voterSnaps = _votingPowerSnapshotsByVoter[voter];
+        uint256 n = voterSnaps.length;
+        // If same timestamp as last entry, overwrite the last snapshot, otherwise append.
+        if (n != 0) {
+            VotingPowerSnapshot memory lastSnap = voterSnaps[n - 1];
+            if (lastSnap.timestamp == snap.timestamp) {
+                voterSnaps[n - 1] = snap;
+                return;
+            }
+        }
+        voterSnaps.push(snap);
+    }
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+To mitigate this, you could use a less strict comparison, such as `>=` or `<=`, or better yet, use block numbers `(block.number)` instead of timestamps for comparisons, as they are much harder to manipulate. 
+Here's an example:
+```sol
+if (lastSnap.blockNumber <= snap.blockNumber) {
+    lastSnap.votingPower = snap.votingPower;
+} else {
+    snapshots.push(snap);
+}
+```
+In this revised code, `lastSnap.blockNumber` is compared to snap.blockNumber, which is much harder for an attacker to manipulate.
