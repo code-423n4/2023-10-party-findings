@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "3",
+  "title": "Changing the `totalVotingPower` will affect the current votes required for the current proposal in the Party",
+  "issueId": 138,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/138"
+}
