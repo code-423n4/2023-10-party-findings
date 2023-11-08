@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "3",
+  "title": "In `PartyGovernanaceNFT.sol#rageQuit()`, there is no check if `withdrawTokens[i].balanceOf(address(this))` is `zero', resulting in a case where users will not get their `ethers balance` back, but their `Governance NFT balance ` (voting rights) will be burned",
+  "issueId": 133,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/133"
+}
