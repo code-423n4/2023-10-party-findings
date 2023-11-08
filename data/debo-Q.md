@@ -321,3 +321,60 @@ Since there are no access controls on the setSigningThresholdBps function, this 
 VS Code.
 ## Recommended Mitigation Steps
 Add access control modifier to the setSigningThresholdBps function.
+## [L-10] Unchecked Transfer PartyGovernanceNFT
+## Impact
+Some tokens do not revert the transaction when the transfer or transferFrom fails and returns False. 
+Hence we must check the return value after calling the transfer or transferFrom function.
+## Proof of Concept
+**Vulnerable transferFrom function**
+```sol
+    function transferFrom(address owner, address to, uint256 tokenId) public override {
+        // Transfer voting along with token.
+        _transferVotingPower(owner, to, votingPowerByTokenId[tokenId]);
+        super.transferFrom(owner, to, tokenId);
+    }
+```
+**Exploit of transferFrom function in foundry**
+```sol
+function testTransferFrom() external {
+       (Party party, , ) = partyAdmin.createParty(
+            partyImpl,
+            PartyAdmin.PartyCreationMinimalOptions({
+                host1: address(this),
+                host2: address(0),
+                passThresholdBps: 5100,
+                totalVotingPower: 100,
+                preciousTokenAddress: address(toadz),
+                preciousTokenId: 1,
+                rageQuitTimestamp: 0,
+                feeBps: 0,
+                feeRecipient: payable(0)
+            })
+        );
+        address recipient = _randomAddress();
+        vm.prank(address(partyAdmin));
+        uint256 tokenId = uint256(115792089237316195423570985008687907853269984665640564039457584007913129639935);
+
+        vm.prank(address(partyAdmin));
+        party.transferFrom(address(partyAdmin),recepient,tokenId);
+
+        // Check token burned
+        vm.expectRevert("NOT_MINTED");
+        party.ownerOf(tokenId);
+
+        assertEq(party.votingPowerByTokenId(tokenId), 0);
+        assertEq(party.mintedVotingPower(), 0);
+    }
+```
+**Terminal**
+```zsh
+forge test -vv --match-path  "/Users/williamsmith/Downloads/2023-10-party/test/party/PartyGovernanceNFT.t.sol" --match-test "testTransferFrom" --fork-url https://eth-mainnet.g.alchemy.com/v2/RPC_URL --optimizer-runs=1
+```
+**Log**
+```log
+test/party/PartyGovernanceNFT.t.sol
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+Use OpenZeppelin SafeERC20's safetransfer and safetransferFrom functions.
