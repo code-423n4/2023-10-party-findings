@@ -866,3 +866,116 @@ if (lastSnap.blockNumber <= snap.blockNumber) {
 }
 ```
 In this revised code, `lastSnap.blockNumber` is compared to snap.blockNumber, which is much harder for an attacker to manipulate.
+## [L-15] Use of dangerous strict equality
+## Impact
+The strict equality check `lastRageQuitTimestamp == block.timestamp` in the accept function of the PartyGovernance contract could potentially be manipulated by an attacker. 
+This is because the `block.timestamp` can be influenced by miners to some degree.
+## Proof of Concept
+Here is a simple proof of concept (POC) to demonstrate this:
+```sol
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.8.20;
+
+contract PartyGovernance {
+    uint40 public lastRageQuitTimestamp;
+
+    function accept(uint256 proposalId, uint256 optionId) public returns(uint256) {
+        // ...
+
+        if (lastRageQuitTimestamp == block.timestamp) {
+            return values.votes
+        }
+
+            return values.votes
+    }
+}
+```
+In this POC, an attacker could potentially manipulate the block.timestamp to make the condition `lastRageQuitTimestamp == block.timestamp true`, and thus execute the code inside the if statement.
+**Locations**
+```sol
+// PartyGovernance.accept(uint256,uint256) (contracts/party/PartyGovernance.sol#595-658) 
+    function accept(uint256 proposalId, uint256 snapIndex) public returns (uint256 totalVotes) {
+        // Get the information about the proposal.
+        ProposalState storage info = _proposalStateByProposalId[proposalId];
+        ProposalStateValues memory values = info.values;
+
+
+        // Can only vote in certain proposal statuses.
+        {
+            ProposalStatus status = _getProposalStatus(values);
+            // Allow voting even if the proposal is passed/ready so it can
+            // potentially reach 100% consensus, which unlocks special
+            // behaviors for certain proposal types.
+            if (
+                status != ProposalStatus.Voting &&
+                status != ProposalStatus.Passed &&
+                status != ProposalStatus.Ready
+            ) {
+                revert BadProposalStatusError(status);
+            }
+        }
+
+
+        // Prevent voting in the same block as the last rage quit timestamp.
+        // This is to prevent an exploit where a member can rage quit to reduce
+        // the total voting power of the party, then propose and vote in the
+        // same block since `getVotingPowerAt()` uses `values.proposedTime - 1`.
+        // This would allow them to use the voting power snapshot just before
+        // their card was burned to vote, potentially passing a proposal that
+        // would have otherwise not passed.
+        if (lastRageQuitTimestamp == block.timestamp) {
+            revert CannotRageQuitAndAcceptError();
+        }
+
+
+        // Cannot vote twice.
+        if (info.hasVoted[msg.sender]) {
+            revert AlreadyVotedError(msg.sender);
+        }
+        // Mark the caller as having voted.
+        info.hasVoted[msg.sender] = true;
+
+
+        // Increase the total votes that have been cast on this proposal.
+        uint96 votingPower = getVotingPowerAt(msg.sender, values.proposedTime - 1, snapIndex);
+        values.votes += votingPower;
+        if (isHost[msg.sender]) {
+            ++values.numHostsAccepted;
+        }
+        info.values = values;
+        emit ProposalAccepted(proposalId, msg.sender, votingPower);
+
+
+        // Update the proposal status if it has reached the pass threshold.
+        if (
+            values.passedTime == 0 &&
+            _areVotesPassing(
+                values.votes,
+                values.totalVotingPower,
+                _getSharedProposalStorage().governanceValues.passThresholdBps
+            )
+        ) {
+            info.values.passedTime = uint40(block.timestamp);
+            emit ProposalPassed(proposalId);
+            // Notify third-party platforms that the governance NFT metadata has
+            // updated for all tokens.
+            emit BatchMetadataUpdate(0, type(uint256).max);
+        }
+        return values.votes;
+    }
+```
+```sol
+// uses a dangerous strict equality:
+- lastRageQuitTimestamp == block.timestamp (contracts/party/PartyGovernance.sol#622)
+        if (lastRageQuitTimestamp == block.timestamp) {
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+To mitigate this, you could use a less strict comparison, such as `>=` or `<=`, or better yet, use block numbers (`block.number`) instead of timestamps for comparisons, as they are much harder to manipulate. Here's an example:
+```sol
+if (lastRageQuitBlockNumber <= block.number) {
+    // Some code...
+}
+```
+In this revised code, `lastRageQuitBlockNumber` is compared to the current block number, which is much harder for an attacker to manipulate.
