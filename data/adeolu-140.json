@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "refund in contribute() can fail if one of the members have very complex fallback function ",
+  "issueId": 140,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/140"
+}
