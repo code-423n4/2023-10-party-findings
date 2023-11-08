@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "osmanozdemir1",
+  "risk": "2",
+  "title": "`OffChainSignatureValidator::isValidSignature()` might return false even if the signer votes meet the signing threshold requirement",
+  "issueId": 139,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/139"
+}
