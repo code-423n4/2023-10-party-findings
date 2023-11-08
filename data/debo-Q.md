@@ -275,3 +275,49 @@ VS Code.
 ## Recommended Mitigation Steps
 Only use modifiers for implementing checks and validations. 
 Do not make external calls or state changing actions inside modifiers.
+## [L-09] Access control issue
+## Impact
+Anyone can call the function named setSigningThresholdBps within the OffChainSignatureValidator contract.
+**Vulnerable setSigningThresholdBps function to access control**
+```sol
+    function setSigningThresholdBps(uint96 thresholdBps) external {
+        Party party = Party(payable(msg.sender));
+        emit SigningThresholdBpsSet(party, signingThersholdBps[party], thresholdBps);
+        signingThersholdBps[party] = thresholdBps;
+    }
+```
+## Proof of Concept
+Here is a proof of concept (POC) that demonstrates the lack of access controls on the setSigningThresholdBps function. 
+This POC assumes that you have a deployed instance of the OffChainSignatureValidator contract.
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "./OffChainSignatureValidator.sol";
+
+contract POC {
+    OffChainSignatureValidator public offChainSignatureValidator;
+
+    constructor(OffChainSignatureValidator _offChainSignatureValidator) {
+        offChainSignatureValidator = OffChainSignatureValidator(_offChainSignatureValidator);
+    }
+
+    function exploit() public {
+        // The attacker can set the signing threshold BPS to any value
+        uint96 newThresholdBps = 5000; // 50%
+
+        offChainSignatureValidator.setSigningThresholdBps(newThresholdBps);
+
+        // Log the new threshold BPS
+        emit ThresholdBpsSet(newThresholdBps);
+    }
+
+    event ThresholdBpsSet(uint96 newThresholdBps);
+}
+```
+This contract, when deployed and its exploit function called, will set the signing threshold BPS to 50% on the OffChainSignatureValidator contract. 
+Since there are no access controls on the setSigningThresholdBps function, this operation will succeed even though the attacker should not have the authority to perform this action.
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+Add access control modifier to the setSigningThresholdBps function.
