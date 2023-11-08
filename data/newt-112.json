@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "newt",
+  "risk": "2",
+  "title": "Set ethavailable to 0 before refunding",
+  "issueId": 112,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/112"
+}
