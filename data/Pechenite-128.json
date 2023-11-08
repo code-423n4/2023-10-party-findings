@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "3",
+  "title": "If for some users the `PartyGovernanceNFT.sol#burn()` function is called before the party becomes `Active', the `votingPower` for those users is deleted (set to 0). At the end of the `PartyGovernanceNFT.sol#burn()` function, the state variable `mintedVotingPower` is decremented. But the `state variables responsible for contributions and voting` in the `InitialETHCrowdfund.sol` contract do not change and remain the same. This allows the crowdfunding to be finalized even if `totalContributions` in `InitialETHCrowdfund` is lower than `minTotalContribution`.",
+  "issueId": 128,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/128"
+}
