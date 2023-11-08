@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "2",
+  "title": "Wrong scaling in `rageQuit()` for `withdraw tokens` with non-18 decimals",
+  "issueId": 134,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/134"
+}
