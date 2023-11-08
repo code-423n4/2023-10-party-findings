@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "refunds in contribute() may brick crowdfunds from becoming won/finalized",
+  "issueId": 135,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/135"
+}
