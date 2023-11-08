@@ -248,3 +248,30 @@ contracts/proposals/ProposalStorage.sol#L61-L63
 contracts/proposals/ProposalExecutionEngine.sol#L306-L312
 contracts/proposals/ProposalExecutionEngine.sol#L337-L339
 ```
+## [L-08] Modifier side effects
+## Impact
+Solidity functions should always use the Checks-Effects-Interactions pattern which states that the initial stage will contain only checks and validations which resides in the modifiers.
+Due to this reason, modifiers should only implement checks and validations inside of it and should not make state changes and external calls.
+## Proof of Concept
+The contract PartyGovernance was found to be violating this pattern and the modifier onlyPartyDaoOrHost was making sensitive state changes and modifications.
+**Vulnerable line of code**
+```sol
+// Ln 243
+        address partyDao = _GLOBALS.getAddress(LibGlobals.GLOBAL_DAO_WALLET);
+```
+**Vulnerable onlyPartyDaoOrHost modifier**
+```sol
+// contracts/party/PartyGovernance.sol#L242-L248
+    modifier onlyPartyDaoOrHost() {
+        address partyDao = _GLOBALS.getAddress(LibGlobals.GLOBAL_DAO_WALLET);
+        if (msg.sender != partyDao && !isHost[msg.sender]) {
+            revert NotAuthorized();
+        }
+        _;
+    }
+```
+## Tools Used
+VS Code.
+## Recommended Mitigation Steps
+Only use modifiers for implementing checks and validations. 
+Do not make external calls or state changing actions inside modifiers.
