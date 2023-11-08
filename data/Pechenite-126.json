@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Pechenite",
+  "risk": "3",
+  "title": "If for some users the `PartyGovernanceNFT.sol#burn()` function is called before the party becomes `Active` and at the end of cuurent Crowdfund Lifecycle, the current Crowdfund become `Lost`, these users will not be able to `refund' their ethers amount",
+  "issueId": 126,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/126"
+}
