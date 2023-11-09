@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "osmanozdemir1",
+  "risk": "2",
+  "title": "The gatekeeper in the `InitialETHCrowdfund::_contribute()` function checks the wrong address",
+  "issueId": 229,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/229"
+}
