@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "TresDelinquentes",
+  "risk": "3",
+  "title": "PartyGovernance.sol#accept Inactive members can still accept proposals",
+  "issueId": 163,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/163"
+}
