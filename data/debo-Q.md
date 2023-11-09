@@ -1036,4 +1036,3 @@ Implementing safe ERC-20 operations following best practices reduces the risk of
 2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::224 => if (ethAvailable > 0) payable(msg.sender).transfer(ethAvailable);
 2023-10-party/contracts/party/PartyGovernanceNFT.sol::454 => super.transferFrom(owner, to, tokenId);
 ```
-## [L-18] 
