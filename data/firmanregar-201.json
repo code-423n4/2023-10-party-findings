@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "firmanregar",
+  "risk": "2",
+  "title": "Possible Reentrancy in PartyGovernance.execute(uint256,PartyGovernance.Proposal,IERC721[],uint256[],bytes,bytes)",
+  "issueId": 201,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/201"
+}
