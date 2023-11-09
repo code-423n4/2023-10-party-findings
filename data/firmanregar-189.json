@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "firmanregar",
+  "risk": "3",
+  "title": "Possible Readonly-reentrancy in ETHCrowdfundBase._finalize(uint96)",
+  "issueId": 189,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/189"
+}
