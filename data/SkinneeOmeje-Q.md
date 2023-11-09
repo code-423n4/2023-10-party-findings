@@ -1,0 +1,4 @@
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L595-L640
+
+In the function accept() in PartyGovernance.sol, they is no check if the caller to this function is a member or has a voting power. This function only check the status of the proposal,  the lastRageQuitTimestamp and if the msg.sender has already voted. It then go ahead and get the votingPower at a snapIndex which can return 0 if the msg.sender has no votingPower and then emit the event ProposalAccepted(). An attacker could spam a proposal with this function and could confuse a monitoring system because it will emit an event with the name proposal accepted even if the caller is not a member and has 0 votingPower.
+Recommendation: Call _assertActiveMember() on the function to check that the caller is member first in order to avoid spamming a proposal with false Vote to support a proposed proposal.
