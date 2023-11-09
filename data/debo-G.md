@@ -139,7 +139,9 @@ SLOADs are expensive (100 gas after the 1st one) compared to MLOAD/MSTORE (3 gas
 Storage variables read multiple times inside a function should instead be cached in the memory the first time (costing 1 SLOAD) and then read from this cache to avoid multiple SLOADs.
 ## [G-07] Don't Initialize Variables with Default Value
 **Impact**
-Relying on default values may lead to unintended consequences if the default values are not explicitly defined. This can result in unexpected behavior, especially if the default value is 0.
+Relying on default values may lead to unintended consequences if the default values are not explicitly defined. 
+This can result in unexpected behavior, especially if the default value is 0.
+Initializing storage variables explicitly during contract deployment can save gas by avoiding unnecessary storage writes.
 **Locations**
 ```
 2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::379 => for (uint i = 0; i < authoritiesLength - 1; ++i) {
@@ -151,6 +153,8 @@ Relying on default values may lead to unintended consequences if the default val
 **Impact**
 If the array length changes dynamically within the loop, caching it outside might lead to incorrect results or unexpected behaviour. 
 This is especially relevant if elements are added or removed from the array inside the loop.
+Caching the array length outside of a loop can result in gas savings. 
+This is because, in Solidity, accessing the length of an array inside a loop can be more gas-intensive as the length is recalculated in every iteration.
 **Locations**
 ```sol
 2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::70 => // The contribution amounts in wei. The length of this array must be
@@ -183,4 +187,65 @@ This is especially relevant if elements are added or removed from the array insi
 2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::197 => if (nextProgressData.length == 0) {
 2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::303 => if (proposalData.length < 4) {
 2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::307 => // By reading 4 bytes into the length prefix, the leading 4 bytes
+```
+## [G-09] Long Revert Strings
+1. Revert Operation Gas Cost:
+Long Revert Strings:
+
+Including long revert strings in require or assert statements can significantly increase gas consumption.
+Longer strings require more gas to store and execute.
+Short Revert Strings:
+
+Using shorter revert strings reduces gas costs, as less gas is needed to store and execute them.
+2. Contract Deployment:
+Long Revert Strings:
+
+During contract deployment, specifying long revert strings increases the deployment gas cost.
+This can impact the overall cost of deploying the contract to the blockchain.
+Short Revert Strings:
+
+Using concise and informative revert strings reduces deployment gas costs.
+3. Execution of Revert Statements:
+Long Revert Strings:
+
+Executing revert statements with long strings consumes more gas.
+Transactions that trigger reverts will incur higher costs.
+Short Revert Strings:
+
+Shorter strings reduce the gas cost of reverting, making transactions more cost-effective.
+4. Contract Interactions:
+Long Revert Strings:
+
+When interacting with other contracts, sending a transaction that triggers a revert with a long string can result in higher gas costs.
+Short Revert Strings:
+
+Using shorter strings in revert statements can optimize gas usage in contract interactions.
+5. Code Size:
+Long Revert Strings:
+
+Longer strings contribute to larger contract bytecode size, potentially impacting the gas cost of deploying and interacting with the contract.
+Short Revert Strings:
+
+Using shorter strings helps to keep the bytecode size smaller, reducing gas costs.
+6. User Experience:
+Long Revert Strings:
+
+While informative error messages are essential for developers, excessively long strings may not significantly improve the end-user experience.
+Short Revert Strings:
+
+Short and clear error messages provide necessary information without sacrificing gas efficiency.
+**Locations**
+```sol
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::11 => import { MetadataProvider } from "../renderers/MetadataProvider.sol";
+2023-10-party/contracts/party/PartyGovernance.sol::4 => import { ITokenDistributor } from "../distribution/ITokenDistributor.sol";
+2023-10-party/contracts/party/PartyGovernance.sol::5 => import { ReadOnlyDelegateCall } from "../utils/ReadOnlyDelegateCall.sol";
+2023-10-party/contracts/party/PartyGovernance.sol::16 => import { IProposalExecutionEngine } from "../proposals/IProposalExecutionEngine.sol";
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::6 => import "openzeppelin/contracts/interfaces/IERC2981.sol";
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::7 => import { IERC1271 } from "openzeppelin/contracts/interfaces/IERC1271.sol";
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::11 => import "./ListOnOpenseaAdvancedProposal.sol";
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::19 => import { SetSignatureValidatorProposal } from "./SetSignatureValidatorProposal.sol";
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::20 => import { SetGovernanceParameterProposal } from "./SetGovernanceParameterProposal.sol";
+2023-10-party/contracts/proposals/ProposalStorage.sol::41 => uint256(keccak256("ProposalStorage.SharedProposalStorage"));
+2023-10-party/contracts/proposals/SetSignatureValidatorProposal.sol::4 => import { IERC1271 } from "openzeppelin/contracts/interfaces/IERC1271.sol";
+2023-10-party/contracts/proposals/SetSignatureValidatorProposal.sol::14 => uint256(keccak256("SetSignatureValidatorProposal.Storage"));
 ```
