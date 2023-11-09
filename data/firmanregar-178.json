@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "firmanregar",
+  "risk": "3",
+  "title": "Token fallback might be dangerous to implement",
+  "issueId": 178,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/178"
+}
