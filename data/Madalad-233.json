@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Madalad",
+  "risk": "3",
+  "title": "Single host can unfairly skip veto period for proposal that does not have full host support",
+  "issueId": 233,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/233"
+}
