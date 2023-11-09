@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "mahdikarimi",
+  "risk": "3",
+  "title": "If voting power for contribution reaches totalVotingPower , user loses contribution for excess voting power",
+  "issueId": 254,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/254"
+}
