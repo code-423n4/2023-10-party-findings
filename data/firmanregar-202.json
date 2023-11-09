@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "firmanregar",
+  "risk": "2",
+  "title": "Reentrancy in PartyGovernanceNFT.rageQuit(uint256[],IERC20[],uint256[],address)",
+  "issueId": 202,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/202"
+}
