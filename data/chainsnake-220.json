@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "chainsnake",
+  "risk": "2",
+  "title": "OffChainSignatureValidator can be bypassed using empty token Id(0 Voting power) when signingThersholdBps of the party is 0",
+  "issueId": 220,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/220"
+}
