@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "osmanozdemir1",
+  "risk": "2",
+  "title": "`numHosts` and the actual host count might be different in the `PartyGovernance.sol`, which will lead to some functionality being broken",
+  "issueId": 242,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/242"
+}
