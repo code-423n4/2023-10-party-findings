@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "TresDelinquentes",
+  "risk": "3",
+  "title": "InitialETHCrowdfund.sol#initialize If the crowdfund has ETH inside it before it gets initialized, it won''t go to the initial contribution",
+  "issueId": 197,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/197"
+}
