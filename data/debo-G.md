@@ -137,3 +137,50 @@ The contract PartyGovernance is using the state variable UINT40_HIGH_BIT multipl
 SLOADs are expensive (100 gas after the 1st one) compared to MLOAD/MSTORE (3 gas each).
 **Remediation**
 Storage variables read multiple times inside a function should instead be cached in the memory the first time (costing 1 SLOAD) and then read from this cache to avoid multiple SLOADs.
+## [G-07] Don't Initialize Variables with Default Value
+**Impact**
+Relying on default values may lead to unintended consequences if the default values are not explicitly defined. This can result in unexpected behavior, especially if the default value is 0.
+**Locations**
+```
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::379 => for (uint i = 0; i < authoritiesLength - 1; ++i) {
+2023-10-party/contracts/party/PartyGovernance.sol::305 => for (uint256 i = 0; i < govOpts.hosts.length; ++i) {
+2023-10-party/contracts/party/PartyGovernance.sol::432 => uint256 low = 0;
+2023-10-party/contracts/party/PartyGovernance.sol::1054 => uint256 flags = 0;
+```
+## [G-08] Cache Array Length Outside of Loop
+**Impact**
+If the array length changes dynamically within the loop, caching it outside might lead to incorrect results or unexpected behaviour. 
+This is especially relevant if elements are added or removed from the array inside the loop.
+**Locations**
+```sol
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::70 => // The contribution amounts in wei. The length of this array must be
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::71 => // equal to the length of `tokenIds`.
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::88 => // The contribution amounts in wei. The length of this array must be
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::89 => // equal to the length of `recipients`.
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::207 => uint256 numContributions = args.tokenIds.length;
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::258 => votingPowers = new uint96[](args.recipients.length);
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::260 => for (uint256 i; i < args.recipients.length; ++i) {
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::354 => uint256 numRefunds = tokenIds.length;
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::377 => uint256 authoritiesLength = opts.authorities.length + 1;
+2023-10-party/contracts/party/PartyGovernance.sol::295 => numHosts = uint8(govOpts.hosts.length);
+2023-10-party/contracts/party/PartyGovernance.sol::302 => if (govOpts.hosts.length > type(uint8).max) {
+2023-10-party/contracts/party/PartyGovernance.sol::305 => for (uint256 i = 0; i < govOpts.hosts.length; ++i) {
+2023-10-party/contracts/party/PartyGovernance.sol::431 => uint256 high = snaps.length;
+2023-10-party/contracts/party/PartyGovernance.sol::900 => return nextProgressData.length == 0;
+2023-10-party/contracts/party/PartyGovernance.sol::910 => uint256 snapsLength = snaps.length;
+2023-10-party/contracts/party/PartyGovernance.sol::1031 => uint256 n = voterSnaps.length;
+2023-10-party/contracts/party/PartyGovernance.sol::1047 => uint256 n = voterSnaps.length;
+2023-10-party/contracts/party/PartyGovernance.sol::1141 => if (preciousTokens.length != preciousTokenIds.length) {
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::102 => for (uint256 i; i < authorities.length; ++i) {
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::272 => for (uint256 i; i < tokenIds.length; ++i) {
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::350 => if (tokenIds.length == 0) revert NothingToBurnError();
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::375 => uint256[] memory withdrawAmounts = new uint256[](withdrawTokens.length);
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::378 => for (uint256 i; i < withdrawTokens.length; ++i) {
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::391 => for (uint256 j; j < tokenIds.length; ++j) {
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::408 => for (uint256 i; i < withdrawTokens.length; ++i) {
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::131 => if (initializeData.length == 0) return;
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::169 => if (params.progressData.length != 0) {
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::197 => if (nextProgressData.length == 0) {
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::303 => if (proposalData.length < 4) {
+2023-10-party/contracts/proposals/ProposalExecutionEngine.sol::307 => // By reading 4 bytes into the length prefix, the leading 4 bytes
+```
