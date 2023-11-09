@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "lsaudit",
+  "risk": "2",
+  "title": "`_burnAndUpdateVotingPower()` updates `mintedVotingPower` in incorrect way",
+  "issueId": 181,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/181"
+}
