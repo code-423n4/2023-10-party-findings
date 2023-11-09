@@ -1026,3 +1026,14 @@ This is because the `_GLOBALS` variable in `PartyGovernanceNFT` is shadowing the
 VS Code.
 ## Recommended Mitigation Steps
 To avoid this, you should rename one of the _GLOBALS variables to a different name.
+## [L-17] Don't Initialize Variables with Default Value
+**Impact**
+Relying on default values may lead to unintended consequences if the default values are not explicitly defined. This can result in unexpected behavior, especially if the default value is 0.
+**Findings:**
+```
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::379 => for (uint i = 0; i < authoritiesLength - 1; ++i) {
+2023-10-party/contracts/party/PartyGovernance.sol::305 => for (uint256 i = 0; i < govOpts.hosts.length; ++i) {
+2023-10-party/contracts/party/PartyGovernance.sol::432 => uint256 low = 0;
+2023-10-party/contracts/party/PartyGovernance.sol::1054 => uint256 flags = 0;
+```
+## [L-18] 
