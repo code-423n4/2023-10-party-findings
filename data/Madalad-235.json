@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "Contracts cannot be deployed to L2 due to incompatible Solidity version",
+  "issueId": 235,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/235"
+}
