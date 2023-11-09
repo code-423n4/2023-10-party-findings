@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "Authority can DoS voting by abusing `rageQuit`",
+  "issueId": 232,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/232"
+}
