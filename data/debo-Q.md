@@ -1026,3 +1026,14 @@ This is because the `_GLOBALS` variable in `PartyGovernanceNFT` is shadowing the
 VS Code.
 ## Recommended Mitigation Steps
 To avoid this, you should rename one of the _GLOBALS variables to a different name.
+## [L-17] Unsafe ERC20 Operation(s)
+Unsafe ERC-20 Operations:
+Performing unsafe operations on ERC-20 tokens, such as unchecked transfers or manipulations, may introduce security vulnerabilities.
+Safe ERC-20 Operations:
+Implementing safe ERC-20 operations following best practices reduces the risk of security vulnerabilities.
+**Locations**
+```sol
+2023-10-party/contracts/crowdfund/InitialETHCrowdfund.sol::224 => if (ethAvailable > 0) payable(msg.sender).transfer(ethAvailable);
+2023-10-party/contracts/party/PartyGovernanceNFT.sol::454 => super.transferFrom(owner, to, tokenId);
+```
+## [L-18] 
