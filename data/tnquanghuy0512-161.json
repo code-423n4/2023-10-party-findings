@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "tnquanghuy0512",
+  "risk": "2",
+  "title": "Base Mainnet currently is not supported Solidity compiler version 0.8.20 yet",
+  "issueId": 161,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/161"
+}
