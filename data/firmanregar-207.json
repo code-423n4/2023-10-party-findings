@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "firmanregar",
+  "risk": "2",
+  "title": "Dubious typecast in PartyGovernance._initialize(PartyGovernance.GovernanceOpts,ProposalStorage.ProposalEngineOpts,IERC721[],uint256[])",
+  "issueId": 207,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/207"
+}
