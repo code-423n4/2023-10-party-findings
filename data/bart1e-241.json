@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "bart1e",
+  "risk": "2",
+  "title": "In some cases, when all hosts accept a proposal, the execution delay will not be skipped",
+  "issueId": 241,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/241"
+}
