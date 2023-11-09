@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "chainsnake",
+  "risk": "2",
+  "title": "The ragequitted ETHs may disappear permanently by invalid receiver address parameter",
+  "issueId": 218,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/218"
+}
