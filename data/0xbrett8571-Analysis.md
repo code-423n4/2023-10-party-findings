@@ -2,7 +2,7 @@
 
 The Party Protocol enables groups to coordinate and collectively govern assets via proposals and voting. The core unit is a Party - a virtual group account that members can make proposals and vote on. Parties are formed via crowdfunds where contributors get voting power. 
 
-**Architecture**
+### Architecture
 
 The protocol architecture consists of the following key components:
 
@@ -91,6 +91,15 @@ External contracts like Zora are referenced for executing proposals involving th
 The core components are Parties and Proposals. Crowdfund contracts allow the creation of new Parties. 
 
 The other components like Gatekeepers, Renderers, and TokenDistribution provide supporting capabilities.
+
+**Security Analysis**
+
+| Issue | Description | Mitigation |
+|-|-|-|
+| Incorrect voting power snapshots | Potential double counting of votes if snapshot logic has bug | Thorough auditing of voting power accounting code |
+| Ruggable assets | Unprotected access to Party's assets like ETH or ERC20s | Audit asset transfer logic and access controls |  
+| Malicious proposals | Bad proposals like stealing NFTs or rugging assets | Review proposal types thoroughly, give hosts veto power |
+| Flash loan attacks | Quick borrowing of funds to manipulate governance | Use minimum voting and execution delays |
 
 **Smart Contracts**
 
@@ -254,6 +263,57 @@ The Party also relies on the PartyGovernance and PartyGovernanceNFT contracts fo
 
 In summary, the Party fully trusts Authorities and Hosts roles as well as the ProposalEngineImplementation and governance contracts. These trusted components should be carefully vetted before deployment.
 
+**All the admin functions and modifiers in the Party Protocol contracts**
+
+**PartyGovernanceNFT.sol**
+
+Admin Functions:
+
+- mint - Mint new NFT 
+- burn - Burn NFT
+- increaseVotingPower - Increase NFT voting power
+- decreaseVotingPower - Decrease NFT voting power
+- increaseTotalVotingPower - Increase total voting power
+- decreaseTotalVotingPower - Decrease total voting power
+- addAuthority - Add approved authority
+- abdicateAuthority - Remove self as authority
+
+Modifiers:
+
+- _assertAuthority - Restricts access to authorities
+
+**PartyGovernance.sol**
+
+Admin Functions:
+
+- disableEmergencyExecute - Disable emergency execute capability
+
+Modifiers:
+
+- onlyPartyDaoOrHost - Restrict access to DAO or hosts
+- onlyPartyDao - Restrict access to just DAO
+
+**ProposalExecutionEngine.sol**
+
+Admin Functions:
+
+- initialize - Initialize proposal engine impl
+- cancelProposal - Cancel stuck proposal
+
+Modifiers: 
+
+- onlyDelegateCall - Restrict access to delegatecalls
+
+**InitialETHCrowdfund.sol**
+
+Admin Functions:
+
+- initialize - Initialize crowdfund parameters
+
+Modifiers:
+
+- onlyInitialize - Restrict to initializer function
+
 **The Party Protocol changelog:**
 
 **Add ERC1271 Signing**
@@ -396,15 +456,6 @@ To improve:
 - Use interfaces instead of concrete contract types.
 - Make proposal engine upgradeable.
 
-**Security Analysis**
-
-| Issue | Description | Mitigation |
-|-|-|-|
-| Incorrect voting power snapshots | Potential double counting of votes if snapshot logic has bug | Thorough auditing of voting power accounting code |
-| Ruggable assets | Unprotected access to Party's assets like ETH or ERC20s | Audit asset transfer logic and access controls |  
-| Malicious proposals | Bad proposals like stealing NFTs or rugging assets | Review proposal types thoroughly, give hosts veto power |
-| Flash loan attacks | Quick borrowing of funds to manipulate governance | Use minimum voting and execution delays |
-
 **Conclusion**
 
 The Party Protocol demonstrates well-designed modular architecture and has taken care to limit risk surface area. A few areas of concern exist around voting power tracking complexity and privilege levels of roles like authorities.
@@ -413,5 +464,7 @@ The Party Protocol demonstrates well-designed modular architecture and has taken
 
 
 
+
+
 ### Time spent:
-44 hours
+38 hours
