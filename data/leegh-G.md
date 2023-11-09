@@ -1,7 +1,7 @@
 ## [G-01] Nested loop to calculate ```withdrawAmounts``` in ```rageQuit```.
 Nested loops are used to calculate ```withdrawAmounts``` in ```rageQuit```, which is inefficient. It can be optimized by:
-1. Move the inner "tokenIds" loop out, and change it to only sum up the *total voting power* of all ```tokenIds```, as it is independent from the ```withdrawTokens```.
-2. In the "withdrawTokens" loop, calculate the ```withdrawAmounts```
+1. Move the inner "tokenIds" loop out, and sum up the ```totalVotingPower``` of all ```tokenIds```, as it is independent from the ```withdrawTokens```.
+2. Calculate the ```withdrawAmounts``` with previous ```totalVotingPower``` in the "withdrawTokens" loop.
 ```solidity
 origin:
 374:        // Sum up total amount of each token to withdraw.
