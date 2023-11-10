@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "klau5",
+  "risk": "3",
+  "title": "contributeFor - attacker can delegate someone else's vote freely",
+  "issueId": 459,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/459"
+}
