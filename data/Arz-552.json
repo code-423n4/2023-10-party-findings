@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Arz",
+  "risk": "2",
+  "title": "In some cases the crowdfund cant be finalized because the minContribution amount check is after the amount is reduced",
+  "issueId": 552,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/552"
+}
