@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Topmark",
+  "risk": "2",
+  "title": "isValidSignature Function is not Properly Implemented",
+  "issueId": 355,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/355"
+}
