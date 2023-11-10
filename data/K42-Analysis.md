@@ -132,7 +132,7 @@ For [PartyGovernanceNFT.sol](https://github.com/code-423n4/2023-10-party/blob/ma
    - ``mint``: Mints a new token with specified voting power and delegate.
    - ``increaseVotingPower``, ``decreaseVotingPower``: Adjusts the voting power of a token.
    - ``increaseTotalVotingPower``, ``decreaseTotalVotingPower``: Adjusts the total voting power available.
-   - burn: Burns tokens and updates voting power accordingly.
+   - ``burn``: Burns tokens and updates voting power accordingly.
    - ``setRageQuit``: Sets the rage quit timestamp.
    - ``rageQuit``: Allows token holders to withdraw their share of the contract's assets based on their voting power.
    - ``transferFrom``, ``safeTransferFrom``: Transfer functions that also handle voting power transfer.
@@ -163,7 +163,7 @@ For [ProposalExecutionEngine.sol](https://github.com/code-423n4/2023-10-party/bl
 - **Error Definitions**:
    - Custom errors for unsupported proposal types, disabled proposals, malformed data, blocked executions, and invalid progress data.
 - **Enums**:
-   - ``ProposalType`: Enumerates different types of proposals that can be executed.
+   - ``ProposalType``: Enumerates different types of proposals that can be executed.
 - **Structs**:
    - ``Storage``: Holds the hash of the next progress data and the ID of the current in-progress proposal.
 - **Events**:
@@ -258,7 +258,7 @@ For [SetSignatureValidatorProposal.sol](https://github.com/code-423n4/2023-10-pa
    - The ``SetSignatureValidatorProposal`` contract is designed to manage the association between signature hashes and their corresponding validators, specifically for validating ``ERC1271`` signatures.
 - **Structs**:
    - ``SetSignatureValidatorProposalStorage``: Contains a mapping of signature hashes to their respective signature validators (``IERC1271``).
-   - `SetSignatureValidatorProposalData``: Holds the data necessary for the proposal, including the signature hash and the signature validator.
+   - ``SetSignatureValidatorProposalData``: Holds the data necessary for the proposal, including the signature hash and the signature validator.
 - **Events**:
    - ``SignatureValidatorSet``: Emitted when a new signature validator is set for a specific hash.
 - **Functions**:
@@ -346,6 +346,8 @@ For [Implementation.sol](https://github.com/code-423n4/2023-10-party/blob/main/c
 
 #### Conclusion:
 - While [Party-Protocol](https://github.com/code-423n4/2023-10-party) is a promising platform for decentralized asset governance, it requires careful attention to potential security risks, particularly those arising from complex interactions and dependencies between contracts. Continuous monitoring, regular audits, and a proactive approach to security will be essential to maintain the integrity and trust in the protocol.
+
+
 
 ### Time spent:
 24.2 hours
