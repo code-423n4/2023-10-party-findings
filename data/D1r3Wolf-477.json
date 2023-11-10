@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "D1r3Wolf",
+  "risk": "3",
+  "title": "`totalVotingPower` is not being decreased in burn function in `PartyGovernanceNFT`.",
+  "issueId": 477,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/477"
+}
