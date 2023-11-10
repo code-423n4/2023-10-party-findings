@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0xepley",
+  "risk": "2",
+  "title": "Send Ether will call instead of transfer",
+  "issueId": 556,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/556"
+}
