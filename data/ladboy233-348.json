@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "ladboy233",
+  "risk": "3",
+  "title": "User can frontrun / backrun total voting power update to withdraw more fund from party",
+  "issueId": 348,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/348"
+}
