@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "King_",
+  "risk": "2",
+  "title": "_Contribute function in InitialETHCrowdfund contract does not take account of tokens with id=0",
+  "issueId": 380,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/380"
+}
