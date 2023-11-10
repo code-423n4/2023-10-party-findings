@@ -41,4 +41,23 @@ struct ETHCrowdfundOptions {
     bytes12 gateKeeperId;                             // slot7   (12 bytes)
 }
 ````
+## [G-02] With assembly, `.call (bool success)` transfer can be done gas-optimized
+Return data (bool success,) has to be stored due to EVM architecture. But in a usage like below, ‘out’ and ‘outsize’ values are given (0,0); this storage disappears and gas optimization is provided.
+````diff
+- (bool success,) = dest.call{value:amount}("");
 
++ assembly {
++    success := call(gas(), dest, amount, 0, 0) 
++   }
+````
+[Reference](https://code4rena.com/reports/2023-01-biconomy#g-01-with-assembly-call-bool-success-transfer-can-be-done-gas-optimized)
+````solidity
+contracts/crowdfund/ETHCrowdfundBase.sol
+379:        (bool success, bytes memory res) = targetAddress.call{ value: amountEth }(targetCallData);
+````
+[https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L379](https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L379)
+````solidity
+contracts/party/PartyGovernance.sol
+846:        (bool success, bytes memory res) = targetAddress.call{ value: amountEth }(targetCallData);
+````
+[https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L846](https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L846)
