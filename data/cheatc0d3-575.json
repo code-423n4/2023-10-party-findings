@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "cheatc0d3",
+  "risk": "2",
+  "title": "The function `_initProposalImpl` should have access control checks to restrict who can initialize or change the implementation.",
+  "issueId": 575,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/575"
+}
