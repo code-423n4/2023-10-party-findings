@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "ABAIKUNANBAEV",
+  "risk": "2",
+  "title": "refund() requires amount of ETH in the contract to be always equal to the votingPower",
+  "issueId": 384,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/384"
+}
