@@ -158,3 +158,65 @@ https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernanceNFT.sol#L359C16-L362C18
 
 
+# G-7. Using a positive conditional flow to save a NOT opcode
+
+Estimated savings: 3 gas
+
+Reference : https://code4rena.com/reports/2023-07-basin#g-13-using-a-positive-conditional-flow-to-save-a-not-opcode
+
+```
+File : contracts/proposals/ProposalStorage.sol
+
+50 :         if (!s) {
+```
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/proposals/ProposalStorage.sol#L50
+
+```
+File : contracts/party/PartyGovernanceNFT.sol
+
+357 :         if (!isAuthority_) {
+```
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernanceNFT.sol#L357
+
+```
+File : contracts/party/PartyGovernance.sol
+
+756 :         if (!completed) {
+
+826 :             if (!success) { 
+
+847 :         if (!success) { 
+
+889 :             if (!success) {
+```
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L756
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L826
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L847
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L889
+
+```
+File : contracts/crowdfund/InitialETHCrowdfund.sol
+
+362 :             if (!s) {
+```
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/InitialETHCrowdfund.sol#L362
+
+```
+File : contracts/crowdfund/ETHCrowdfundBase.sol
+
+380 :        if (!success) {
+```
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L380
+
+
+
+
+
