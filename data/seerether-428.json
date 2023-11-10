@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "seerether",
+  "risk": "3",
+  "title": "InProgress proposals in PartyGovernance can get \"stuck\" indefinitely if maxExecutableTime has passed.",
+  "issueId": 428,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/428"
+}
