@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "zhaojie",
+  "risk": "3",
+  "title": "totalVotingPower is close to the maximum, users who overpay tokens will not be refunded.",
+  "issueId": 356,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/356"
+}
