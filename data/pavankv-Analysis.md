@@ -16,6 +16,8 @@ Analysis Report :-
 ## 1. Overview 
 PartyDAO's first product is PartyBid, a platform for collective bidding on NFTs. PartyBid lets people pool their capital together to purchase NFTs as a team. Anyone can create or join a Party to collectively bid in an NFT auction or purchase an NFT that's on sale at a fixed price.Party DAOs offer a number of benefits over traditional party management structures. First, Party DAOs are more transparent and democratic. All members of the DAO have the right to vote on decisions that affect the party. Second, Party DAOs are more efficient. Smart contracts can automate many of the tasks that are typically associated with party management, such as collecting dues, distributing funds, and organizing events. Third, Party DAOs are more secure. Smart contracts are immutable, which means that they cannot be tampered with. This makes it very difficult for malicious actors to steal funds or disrupt the party's operations.PartyDAO is a good example of how crypto can be used to build new and innovative products and services. It is also a good example of how crypto can be used to create more decentralized and democratic organizations.
 
+**Note :-**
+This report suggests the best recommendations that the Party DAO team can adopt to get rid of the centralized risk associated with single-host parties and compromised hosts. This will help to build a transparent and secure ecosystem in the perception of outsiders.
 
 ## 2. Architecture View
 ![FlowChart](https://user-images.githubusercontent.com/69415766/282084189-24eef2cb-f291-44f0-9f53-8a9f1df0004a.png)
@@ -206,6 +208,8 @@ The above function eliminates the centralization and risky situation for both pa
 
 ## 7. Hours spend 
 64 hours
+
+
 
 ### Time spent:
 64 hours
