@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "falconhoof",
+  "risk": "2",
+  "title": "No token whitelist leaves rageQuit() vulnerable to malicious ERC20 token contracts",
+  "issueId": 570,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/570"
+}
