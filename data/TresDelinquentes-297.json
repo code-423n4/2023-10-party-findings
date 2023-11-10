@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "TresDelinquentes",
+  "risk": "2",
+  "title": "Using Solidity 0.8.20 and the Shanghai EVM version will break determenistic addresses",
+  "issueId": 297,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/297"
+}
