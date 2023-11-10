@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "seerether",
+  "risk": "2",
+  "title": "An attacker could manipulate votes to appear unanimous when the proposal has not actually reached full consensus",
+  "issueId": 443,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/443"
+}
