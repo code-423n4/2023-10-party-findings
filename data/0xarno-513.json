@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0xarno",
+  "risk": "2",
+  "title": "Contracts wont be able to deployed with solidity 0.8.20 on base",
+  "issueId": 513,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/513"
+}
