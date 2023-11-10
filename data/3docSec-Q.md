@@ -81,24 +81,7 @@ Consider adding checks for these values to not exceed a reasonable caps, most li
 
 ---
 
-# [L-05] ETHCrowdfundOptions.duration can overflow to open a crowdfund ending in the past
-
-https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L163
-
-When a crowdfund is created, its expiry is calculated through a downcast:
-
-```Solidity
-        // ETHCrowdfundBase.sol:162
-        // Set the crowdfund start and end timestamps.
-        expiry = uint40(block.timestamp + opts.duration);
-```
-
-Values of `opts.duration` that are high enough to make the addition silently overflow an `uint40` can be passed to create a crowdfund that ends in the past.
-Consider adding a validation or a safe cast library to detect the overflow and inform the caller.
-
----
-
-# [L-06] OffChainSignatureValidator.isValidSignature may revert for division by zero for not started parties
+# [L-05] OffChainSignatureValidator.isValidSignature may revert for division by zero for not started parties
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/signature-validators/OffChainSignatureValidator.sol#L71
 
@@ -131,7 +114,7 @@ Consider re-formulating the operation in a way that would always work:
 
 ---
 
-# [L-07] Contributed tokens left over from exchangeRateBps and fundingSplitBps floor rounding are not reimbursed
+# [L-06] Contributed tokens left over from exchangeRateBps and fundingSplitBps floor rounding are not reimbursed
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/InitialETHCrowdfund.sol#L302
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L267
@@ -171,7 +154,7 @@ Consider refunding the unused tokens when the user contributes to a crowdfund. T
 
 ---
 
-# [L-08] OffChainSignatureValidator.isValidSignature misses a check for ecrecover returning address(0)
+# [L-07] OffChainSignatureValidator.isValidSignature misses a check for ecrecover returning address(0)
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/signature-validators/OffChainSignatureValidator.sol#L58
 
@@ -188,7 +171,7 @@ When OffChainSignatureValidator checks a given signature, it uses `ecrecover` to
 
 When provided an invalid signature, [that is possible because `v` is not validated, `ecrecover` may return `address(0)`](https://github.com/kadenzipfel/smart-contract-vulnerabilities/blob/master/vulnerabilities/unexpected-ecrecover-null-address.md). 
 
-While this does not represent an immediate threat because `address(0)` cannot hold NFTs in the current Party implementation, so a separate check in `isValidSignature` would fail, in the future this missing check could be part of an attack path.
+While this does not represent an immediate threat because `address(0)` cannot hold NFTs in the current Party implementation - so a separate check in `isValidSignature` would fail - in the future this missing check could be part of an attack path.
 
 Consider implementing in-depth defense by:
 - adding a check for `v` to be either 27 or 28
@@ -196,7 +179,7 @@ Consider implementing in-depth defense by:
 
 ---
 
-# [L-09] Missing check for ETHCrowdfundBase.exchangeRateBps being larger than 10_000
+# [L-08] Missing check for ETHCrowdfundBase.exchangeRateBps being larger than 10_000
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L166
 
@@ -214,7 +197,7 @@ Consider adding an extra validation for `exchangeRateBps` being at most 10.000.
 
 ---
 
-# [L-10] Zero is an excessively permissive value for OffchainSignatureValidator default signing threshold 
+# [L-09] Zero is an excessively permissive value for OffchainSignatureValidator default signing threshold 
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/signature-validators/OffChainSignatureValidator.sol#L72
 
@@ -243,7 +226,7 @@ Consider defaulting `thresholdBps` to a reasonably high value i.e. the Party's `
 
 ---
 
-# [L-11] ETHCrowdfundBase._processContribution can fail due to uint96 overflow
+# [L-10] ETHCrowdfundBase._processContribution can fail due to uint96 overflow
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L270
 
@@ -266,7 +249,6 @@ Consider using `uint256` to accommodate values inflated by the product during th
 -       votingPower = (amount * exchangeRateBps) / 1e4;
 +       votingPower = ((uint256(amount) * exchangeRateBps) / 1e4).safeCastUint256ToUint96();
 ```
-
 ---
 
 # [I-01] RendererBase does not need to define a virtual contractURI() function
@@ -312,8 +294,11 @@ The two initialization parameters `initialContributor` and `initialDelegate` tha
 
 Consider removing them from `ETHCrowdfundOptions` and cleaning up the code that passes them through from `InitialETHCrowdfundOptions`.
 
+---
+
 # [I-04] Typo in OffChainSignatureValidator
 
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/signature-validators/OffChainSignatureValidator.sol#L22
 
 Consider renaming the `signingThersholdBps` map to `signingThresholdBps` instead.
+
