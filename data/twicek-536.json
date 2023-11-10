@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "twicek",
+  "risk": "2",
+  "title": "`PartyGovernanceNFT.burn` is not updating the `totalVotingPower`",
+  "issueId": 536,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/536"
+}
