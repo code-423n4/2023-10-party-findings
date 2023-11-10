@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Ch_301",
+  "risk": "2",
+  "title": "`rageQuit()` maybe can't execute as it should",
+  "issueId": 387,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/387"
+}
