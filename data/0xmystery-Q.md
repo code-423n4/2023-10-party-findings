@@ -1,4 +1,4 @@
-## Refund logic for `InitialETHCrowdfund.batchContributeFor()`
+## [L-01] Refund logic for `InitialETHCrowdfund.batchContributeFor()`
 It is observed that the function enforces an exact match between the total message value (`msg.value`) and the cumulative intended contribution amounts (`valuesSum`). This strict check is positioned as a safeguard against overpayment but poses usability concerns as it can lead to transaction reversion upon the slightest excess in funds sent, predominantly hinging on user experience rather than security. It neither poses a direct threat to funds nor contract integrity but could result in an increased rate of failed transactions and unnecessary gas expenditures. Enhancing this function with a refund mechanism, akin to the existing `batchContribute` method, is recommended to mitigate these concerns, provided such alterations are meticulously tested to preclude potential security vulnerabilities.
 
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L255-L273
@@ -25,7 +25,7 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/Initia
 +        if (msg.value - valuesSum > 0) payable(msg.sender).transferEth(ethAvailable);
     }
 ```
-## Allow contribution less than `minContribution` for tokenId != 0
+## [L-02] Allow contribution less than `minContribution` for tokenId != 0
 Increase voting power of contributor's existing party card should be allowed when the amount is less than `minContribution`. Specifically, this will make the final contribution succeed while having `totalContributions` gracefully reach `maxTotalContributions`.
 
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L295
@@ -53,7 +53,7 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCro
             revert BelowMinimumContributionsError(amount, minContribution_);
         }
 ```
-## Array length check on `InitialETHCrowdfund.batchContribute()` and `InitialETHCrowdfund.contributeFor()`
+## [L-03] Array length check on `InitialETHCrowdfund.batchContribute()` and `InitialETHCrowdfund.contributeFor()`
 As commented in structs [`BatchContributeArgs`](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L70-L71) and [`BatchContributeForArgs`](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L88-L89), the length of `values` array must correspondingly be equal to the length of `tokenIds` and `recipients`.
 
 Consider implementing array length check on `InitialETHCrowdfund.batchContribute()` and `InitialETHCrowdfund.contributeFor()` where possible.
@@ -70,7 +70,7 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/Initia
         votingPowers = new uint96[](args.recipients.length);
 +        if (votingPowers != args.values.length) revert();
 ```
-## Unsupported `push0` on L2 chain with a version of Solidity >= 0.8.20.
+## [L-04] Unsupported `push0` on L2 chain with a version of Solidity >= 0.8.20.
 According to the `Additional Context` provided on the contest page:
 
 ```
@@ -81,38 +81,7 @@ The code deployment of the protocol is targeted for two blockchains: Ethereum Ma
 
 Consider changing Solidity version to 0.8.19 or better yet 0.8.21 on all contracts.
 
-## Incomplete comment
-Consider inserting the missing comment below on struct `BatchContributeArgs` in contract `InitialETHCrowdfund`. 
-
-https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L66-L67
-
-```diff
-        // IDs of cards to credit the contributions to. When set to 0, it means
-+        // a new one should be minted.
-        uint256[] tokenIds;
-```
-## Incorrect comments
-https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L201
-https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L252
-
-```diff
--    ///         May not revert if any individual contribution fails.
-+    ///         May revert if any individual contribution fails.
-```
-https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L346
-
-```diff
--    ///         May not revert if any individual refund fails.
-+    ///         May revert if any individual refund fails.
-``` 
-## Spelling/grammatical mistakes
-https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol#L87
-
-```diff
--    // is immutable and it’s address will never change.
-+    // is immutable and its address will never change.
-```
-## Implement early checks
+## [L-05] Implement early checks
 Checks should be done earlier when possible. For example, all essential checks in `InitialETHCrowdfund._contribute()` should be refactored as follows: 
 
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L275-L311
@@ -163,7 +132,7 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/Initia
 -        }
     }
 ```
-## Trace Eth amount left in Crownfund contract
+## [L-06] Trace Eth amount left in Crowdfund contract
 Due to the Solidity language's integer division, which truncates fractional remainders, there will be trace amount of Eth left in the contract after the a won crowdfund has been finalized. Consider refactoring the function below to facilitate a clean sweep of funds:  
 
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol#L338-L359
@@ -195,14 +164,7 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCro
 ```
 Note: The same should also apply to contribution amount if the voting duration expired and the minimum contribution target was not reached. I have nonetheless submitted this separately as a medium finding due to the cumulative four-fold truncations on each user.
 
-## A more robust proposal cycle
-Consider implementing the following:
-
-1. A transient time or window after a proposal is submitted before members can start voting to better facilitate filtering via veto by the hosts. This will make each proposal in its `Voting` state more intact and established rather than abruptly vetoed midway to the `Passed` and/or `Ready` state, incentivizing more members to participate.   
-2. A threshold intrinsic voting power to qualify a member submitting a proposal to further circumvent spamming.
-3. Against votes via `reject()` so that members opposing the proposal could take actions rather than just abstaining from calling `accept()`. 
-
-## Private function with embedded modifier reduces contract size
+## [L-07] Private function with embedded modifier reduces contract size
 According to `Changelog` on the contest page:
 
 ```
@@ -237,7 +199,7 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGover
       _;
   }
 ```
-## Test address in PartyGovernanceNFT.sol
+## [L-08] Test address in PartyGovernanceNFT.sol
 Testnet address for PartyGovernanceNFT.sol is used in the code:
 
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol#L38
@@ -252,7 +214,7 @@ The code deployment of the protocol is targeted for two blockchains: Ethereum Ma
 ```
 Remember to make the changes necessary to be compatible with Ethereum Mainnet and Base Mainnet.
 
-## Prevent making proposal before the party is formed
+## [L-09] Prevent making proposal before the party is formed
 Prevent creating a proposal if the party has not started by having `propose()` refactored as follows:
 
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol#L553-L582
@@ -295,4 +257,42 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGover
         // updated for all tokens.
         emit BatchMetadataUpdate(0, type(uint256).max);
     }
+```
+## [L-10] A more robust proposal cycle
+Consider implementing the following:
+
+1. A transient time or window after a proposal is submitted before members can start voting to better facilitate filtering via veto by the hosts. This will make each proposal in its `Voting` state more intact and established rather than abruptly vetoed midway to the `Passed` and/or `Ready` state, incentivizing more members to participate.   
+2. A threshold intrinsic voting power to qualify a member submitting a proposal to further circumvent spamming.
+3. Against votes via `reject()` so that members opposing the proposal could take actions rather than just abstaining from calling `accept()`. 
+
+## [NC-01] Incomplete comment
+Consider inserting the missing comment below on struct `BatchContributeArgs` in contract `InitialETHCrowdfund`. 
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L66-L67
+
+```diff
+        // IDs of cards to credit the contributions to. When set to 0, it means
++        // a new one should be minted.
+        uint256[] tokenIds;
+```
+## [NC-02] Incorrect comments
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L201
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L252
+
+```diff
+-    ///         May not revert if any individual contribution fails.
++    ///         May revert if any individual contribution fails.
+```
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L346
+
+```diff
+-    ///         May not revert if any individual refund fails.
++    ///         May revert if any individual refund fails.
+``` 
+## [NC-03] Spelling/grammatical mistakes
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol#L87
+
+```diff
+-    // is immutable and it’s address will never change.
++    // is immutable and its address will never change.
 ```
