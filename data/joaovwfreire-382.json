@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "joaovwfreire",
+  "risk": "3",
+  "title": "The execute function at the PartyGovernance contract does not enforce an order of execution for approved proposals",
+  "issueId": 382,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/382"
+}
