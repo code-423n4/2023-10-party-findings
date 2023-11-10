@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "sin1st3r__",
+  "risk": "3",
+  "title": "`rageQuit()` can be front-ran by an attacker to cause permanent fund loss for rage-quitters and potentially profit off from that.",
+  "issueId": 529,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/529"
+}
