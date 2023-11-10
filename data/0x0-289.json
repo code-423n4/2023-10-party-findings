@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0x0",
+  "risk": "2",
+  "title": "Nothing prevents governance voteDuration and executionDelay to be 0",
+  "issueId": 289,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/289"
+}
