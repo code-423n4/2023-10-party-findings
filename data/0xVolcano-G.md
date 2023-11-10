@@ -1,5 +1,6 @@
 # Table Of Contents
 - [Table Of Contents](#table-of-contents)
+  - [Pack some state variables(Note: the bot suggested truncating timestamp, but we can pack without truncating: Save 1 SLOT: 2200 Gas)](#pack-some-state-variablesnote-the-bot-suggested-truncating-timestamp-but-we-can-pack-without-truncating-save-1-slot-2200-gas)
   - [Use the already cached variable instead of reading from storage(Save 1 SLOAD: 100 Gas)](#use-the-already-cached-variable-instead-of-reading-from-storagesave-1-sload-100-gas)
   - [Modifier execution order can help save an entire SLOAD + an external call(Save 2100+ Gas)](#modifier-execution-order-can-help-save-an-entire-sload--an-external-callsave-2100-gas)
   - [Optimize this code by Only casting if indeed `msg.value > 0`(Saves gas for both \>0 and == 0 scenarios)](#optimize-this-code-by-only-casting-if-indeed-msgvalue--0saves-gas-for-both-0-and--0-scenarios)
@@ -11,7 +12,6 @@
   - [Prioritize making cheaper checks  first to reduce gas consumption in revert cases](#prioritize-making-cheaper-checks--first-to-reduce-gas-consumption-in-revert-cases)
   - [Validate all parameters first before performing any other operations if there's no side effects](#validate-all-parameters-first-before-performing-any-other-operations-if-theres-no-side-effects)
   - [Uncheck arithmetic operations that cannot underflow/overflow(The bot missed these)](#uncheck-arithmetic-operations-that-cannot-underflowoverflowthe-bot-missed-these)
-
 
 ## Pack some state variables(Note: the bot suggested truncating timestamp, but we can pack without truncating: Save 1 SLOT: 2200 Gas)
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L194-L214
