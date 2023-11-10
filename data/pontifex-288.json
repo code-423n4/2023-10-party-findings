@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "pontifex",
+  "risk": "2",
+  "title": "A `host` can bypass the `executionDelay` and immediately execute `Passed` proposal",
+  "issueId": 288,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/288"
+}
