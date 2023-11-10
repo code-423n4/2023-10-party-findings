@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Auditwolf",
+  "risk": "2",
+  "title": "Attacker can prevent party members from validating offchain signatures.",
+  "issueId": 431,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/431"
+}
