@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Neon2835",
+  "risk": "2",
+  "title": "The partygovernance contract has the disableemergencyexecute function, but there is no corresponding recovery measure to make the system regain the ability to execute  the proposal in an emergency",
+  "issueId": 423,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/423"
+}
