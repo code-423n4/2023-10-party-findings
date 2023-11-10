@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Authority address can call rageQuit on behalf user with no minWithdraw amount slippage protection",
+  "issueId": 424,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/424"
+}
