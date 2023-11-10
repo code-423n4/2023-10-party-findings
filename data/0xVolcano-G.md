@@ -12,6 +12,60 @@
   - [Validate all parameters first before performing any other operations if there's no side effects](#validate-all-parameters-first-before-performing-any-other-operations-if-theres-no-side-effects)
   - [Uncheck arithmetic operations that cannot underflow/overflow(The bot missed these)](#uncheck-arithmetic-operations-that-cannot-underflowoverflowthe-bot-missed-these)
 
+
+## Pack some state variables(Note: the bot suggested truncating timestamp, but we can pack without truncating: Save 1 SLOT: 2200 Gas)
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L194-L214
+```solidity
+    bool public emergencyExecuteDisabled;
+    /// @notice Distribution fee bps.
+    uint16 public feeBps;
+    /// @notice Distribution fee recipient.
+    address payable public feeRecipient;
+    /// @notice The timestamp of the last time `rageQuit()` was called.
+    uint40 public lastRageQuitTimestamp;
+    /// @notice The hash of the list of precious NFTs guarded by the party.
+    bytes32 public preciousListHash;
+    /// @notice The last proposal ID that was used. 0 means no proposals have been made.
+    uint256 public lastProposalId;
+    /// @notice Whether an address is a party host.
+    mapping(address => bool) public isHost;
+    /// @notice The last person a voter delegated its voting power to.
+    mapping(address => address) public delegationsByVoter;
+    /// @notice Number of hosts for this party
+    uint8 public numHosts;
+    /// @notice ProposalState by proposal ID.
+    mapping(uint256 => ProposalState) private _proposalStateByProposalId;
+    /// @notice Snapshots of voting power per user, each sorted by increasing time.
+    mapping(address => VotingPowerSnapshot[]) private _votingPowerSnapshotsByVoter;
+```
+
+```diff
+
+diff --git a/contracts/party/PartyGovernance.sol b/contracts/party/PartyGovernance.sol
+index 551dae9..e117456 100644
+--- a/contracts/party/PartyGovernance.sol
++++ b/contracts/party/PartyGovernance.sol
+@@ -192,6 +192,8 @@ abstract contract PartyGovernance is
+
+     /// @notice Whether the DAO has emergency powers for this party.
+     bool public emergencyExecuteDisabled;
++        /// @notice Number of hosts for this party
++    uint8 public numHosts;
+     /// @notice Distribution fee bps.
+     uint16 public feeBps;
+     /// @notice Distribution fee recipient.
+@@ -206,8 +208,7 @@ abstract contract PartyGovernance is
+     mapping(address => bool) public isHost;
+     /// @notice The last person a voter delegated its voting power to.
+     mapping(address => address) public delegationsByVoter;
+-    /// @notice Number of hosts for this party
+-    uint8 public numHosts;
++
+     /// @notice ProposalState by proposal ID.
+     mapping(uint256 => ProposalState) private _proposalStateByProposalId;
+     /// @notice Snapshots of voting power per user, each sorted by increasing t
+```
+
 ## Use the already cached variable instead of reading from storage(Save 1 SLOAD: 100 Gas)
 
 https://github.com/code-423n4/2023-10-party/blob/0ce3819de173f7688c9c834ce2cc758dd03c9bd2/contracts/crowdfund/ETHCrowdfundBase.sol#L228-L243
