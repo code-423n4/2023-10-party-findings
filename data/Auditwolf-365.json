@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Auditwolf",
+  "risk": "2",
+  "title": "Due to behavior of ERC165, supportsinterface query might consume more gas than available thereby returning false even though it would've returned  true if it had enough gas.",
+  "issueId": 365,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/365"
+}
