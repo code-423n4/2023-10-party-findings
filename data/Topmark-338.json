@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Topmark",
+  "risk": "2",
+  "title": "Possible Absence of Minimum withdrawal validation due to Mismatch Errors from absence of Array length Validation",
+  "issueId": 338,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/338"
+}
