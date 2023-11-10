@@ -220,3 +220,14 @@ function accept(uint256 proposalId, uint256 snapIndex) public returns (uint256 t
         return values.votes;
     }
 ```
+
+5.
+
+There is an inconsistency in how InitialETHCrowdfund handles excess ETH sent to batchContribute vs batchContributeFor.
+
+batchContribute: Refunds any excess ETH back to the sender after the contributions
+batchContributeFor: Reverts if excess ETH is sent
+
+Suggestion:
+
+Make both revert on excess ETH sent
