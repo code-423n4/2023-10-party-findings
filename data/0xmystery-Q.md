@@ -105,6 +105,13 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/Initia
 -    ///         May not revert if any individual refund fails.
 +    ///         May revert if any individual refund fails.
 ``` 
+## Spelling/grammatical mistakes
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol#L87
+
+```diff
+-    // is immutable and it’s address will never change.
++    // is immutable and its address will never change.
+```
 ## Implement early checks
 Checks should be done earlier when possible. For example, all essential checks in `InitialETHCrowdfund._contribute()` should be refactored as follows: 
 
@@ -156,4 +163,136 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/Initia
 -        }
     }
 ```
-## Trace Eth amount left in InitialETHCrowdfund.sol
+## Trace Eth amount left in Crownfund contract
+Due to the Solidity language's integer division, which truncates fractional remainders, there will be trace amount of Eth left in the contract after the a won crowdfund has been finalized. Consider refactoring the function below to facilitate a clean sweep of funds:  
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol#L338-L359
+
+```diff
+    /// @notice Send the funding split to the recipient if applicable.
+    function sendFundingSplit() external returns (uint96 splitAmount) {
+        // Check that the crowdfund is finalized.
+        CrowdfundLifecycle lc = getCrowdfundLifecycle();
+        if (lc != CrowdfundLifecycle.Finalized) revert WrongLifecycleError(lc);
+
+        if (fundingSplitPaid) revert FundingSplitAlreadyPaidError();
+
+        address payable fundingSplitRecipient_ = fundingSplitRecipient;
+        uint16 fundingSplitBps_ = fundingSplitBps;
+        if (fundingSplitRecipient_ == address(0) || fundingSplitBps_ == 0) {
+            revert FundingSplitNotConfiguredError();
+        }
+
+        fundingSplitPaid = true;
+
+        // Transfer funding split to recipient.
+-        splitAmount = (totalContributions * fundingSplitBps_) / 1e4;
+-        payable(fundingSplitRecipient_).transferEth(splitAmount);
++        payable(fundingSplitRecipient_).transferEth(address.(this).balance);
+
+        emit FundingSplitSent(fundingSplitRecipient_, splitAmount);
+    }
+```
+Note: The same should also apply to contribution amount if the voting duration expired and the minimum contribution target was not reached. I have nonetheless submitted this separately as a medium finding due to the cumulative four-fold truncations on each user.
+
+## A more robust proposal cycle
+Consider implementing the following:
+
+1. A transient time or window after a proposal is submitted before members can start voting to better facilitate filtering via veto by the hosts. This will make each proposal in its `Voting` state more intact and established rather than abruptly vetoed midway to the `Passed` and/or `Ready` state, incentivizing more members to participate.   
+2. A threshold intrinsic voting power to qualify a member submitting a proposal to further circumvent spamming.
+3. Against votes via `reject()` so that members opposing the proposal could take actions rather than just abstaining from calling `accept()`. 
+
+## Private function with embedded modifier reduces contract size
+According to `Changelog` on the contest page:
+
+```
+Update to inline modifiers to reduce contract size for Party :: Necessary to meet the contract size limit.
+```
+While the above method works, the trade off is giving up the useful modifiers.
+
+Consider having the logic of each modifier embedded through a private function to accomplish the same goal of reducing the contract size while keeping the modifier. A `private` visibility that saves more gas on function calls than the `internal` visibility is adopted because the modifier will only be making this call inside the contract.
+
+For instance, the modifier instance below may be refactored as follows:
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol#L231-L239
+
+```diff
++    function _onlyPartyDao() private view {
++        {
++            address partyDao = _GLOBALS.getAddress(LibGlobals.GLOBAL_DAO_WALLET);
++            if (msg.sender != partyDao) {
++                revert NotAuthorized();
++            }
++        }
++    }
+
+  modifier onlyPartyDao() {
+-        {
+-            address partyDao = _GLOBALS.getAddress(LibGlobals.GLOBAL_DAO_WALLET);
+-            if (msg.sender != partyDao) {
+-                revert NotAuthorized();
+-            }
+-        }
++        _onlyPartyDao();
+      _;
+  }
+```
+## Test address in PartyGovernanceNFT.sol
+Testnet address for PartyGovernanceNFT.sol is used in the code:
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol#L38
+
+```solidity
+    address private constant ETH_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
+```
+According to the Additional Context provided on the contest page:
+
+```
+The code deployment of the protocol is targeted for two blockchains: Ethereum Mainnet and Base Mainnet.
+```
+Remember to make the changes necessary to be compatible with Ethereum Mainnet and Base Mainnet.
+
+## Prevent making proposal before the party is formed
+Prevent creating a proposal if the party has not started by having `propose()` refactored as follows:
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol#L553-L582
+
+```diff
+    function propose(
+        Proposal memory proposal,
+        uint256 latestSnapIndex
+    ) external returns (uint256 proposalId) {
+        _assertActiveMember();
+
++        uint96 totalVotingPower_ = _getSharedProposalStorage().governanceValues.totalVotingPower
++        if (totalVotingPower_ == 0) {
++            revert PartyNotStartedError();
++        }
+
+        proposalId = ++lastProposalId;
+        // Store the time the proposal was created and the proposal hash.
+        (
+            _proposalStateByProposalId[proposalId].values,
+            _proposalStateByProposalId[proposalId].hash
+        ) = (
+            ProposalStateValues({
+                proposedTime: uint40(block.timestamp),
+                passedTime: 0,
+                executedTime: 0,
+                completedTime: 0,
+                votes: 0,
+-                totalVotingPower: _getSharedProposalStorage().governanceValues.totalVotingPower,
++                totalVotingPower: totalVotingPower_,
+                numHosts: numHosts,
+                numHostsAccepted: 0
+            }),
+            getProposalHash(proposal)
+        );
+        emit Proposed(proposalId, msg.sender, proposal);
+        accept(proposalId, latestSnapIndex);
+
+        // Notify third-party platforms that the governance NFT metadata has
+        // updated for all tokens.
+        emit BatchMetadataUpdate(0, type(uint256).max);
+    }
+```
