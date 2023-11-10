@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Topmark",
+  "risk": "3",
+  "title": "Overwriting Timestamp Clash would allow bad Actors to Insert Sensitive Voting PowerSnapshot Since it would not end up in Storage",
+  "issueId": 290,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/290"
+}
