@@ -114,3 +114,47 @@ File : contracts/party/PartyGovernance.sol
 https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L286
 
 
+# G-6. OR in if-condition can be rewritten to two single if conditions
+
+Refactoring the if-condition in a way it won’t be containing the || operator will save more gas.
+
+Reference : https://code4rena.com/reports/2023-08-shell#g-05-or-in-if-condition-can-be-rewritten-to-two-single-if-conditions
+
+```
+File : contracts/crowdfund/ETHCrowdfundBase.sol
+
+202 :         if (msg.sender == contributor || oldDelegate == address(0)) {
+
+348 :         if (fundingSplitRecipient_ == address(0) || fundingSplitBps_ == 0) {
+```
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L205
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/crowdfund/ETHCrowdfundBase.sol#L348
+
+```
+File : contracts/party/PartyGovernance.sol 
+
+979 :         if (newDelegate == address(0) || oldDelegate == address(0)) {
+```
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernance.sol#L979
+
+```
+File : contracts/party/PartyGovernanceNFT.sol
+
+328-331 :         if (
+            oldRageQuitTimestamp == ENABLE_RAGEQUIT_PERMANENTLY ||
+            oldRageQuitTimestamp == DISABLE_RAGEQUIT_PERMANENTLY
+        ) 
+
+359-362 :                 if (
+                    currentRageQuitTimestamp == DISABLE_RAGEQUIT_PERMANENTLY ||
+                    currentRageQuitTimestamp < block.timestamp
+                )
+
+```
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernanceNFT.sol#L328C9-L331C11
+
+https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387f2bb9ebb5/contracts/party/PartyGovernanceNFT.sol#L359C16-L362C18
+
+
