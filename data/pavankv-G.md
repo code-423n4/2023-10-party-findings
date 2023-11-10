@@ -99,3 +99,44 @@ unchecked{++i;}
 
 code snippet:-
 https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L379C9-L381C10
+
+## 5. Refactor the short-circuit to save gas :-
+Below scenario we can notice that first condition compares `fundingSplitRecipient_` to zero address , the zero unsigned interger converts to address and second condition compares `fundingSplitBps_` to zero there is no type cast here finally short-circuit uses `||` or operator if first condition it never check the second condition . ThereFore here second conditon is cheaper than first condition .
+
+**Before**
+```solidity
+if (fundingSplitRecipient_ == address(0) || fundingSplitBps_ == 0) {
+            revert FundingSplitNotConfiguredError();
+        }
+```
+
+**After**
+```solidity
+ if ( fundingSplitBps_ == 0 ||fundingSplitRecipient_ == address(0)) { // @audit changed
+            revert FundingSplitNotConfiguredError();
+        } 
+```
+
+Difference can seen Below :-
+
+```
+Before if statement:
+- If fundingSplitRecipient_ is zero:
+- Cost of checking fundingSplitRecipient_ is zero: 3 gas
+- Cost of reverting: 15 gas
+- If fundingSplitBps_ is zero:
+- Cost of checking fundingSplitBps_ is zero: 3 gas
+- Cost of reverting: 15 gas
+- Total: 36 gas
+
+After if statement:
+- If fundingSplitBps_ is zero or fundingSplitRecipient_ is zero:
+- Cost of checking both fundingSplitBps_ and fundingSplitRecipient_ at the same time: 6 gas
+- Cost of reverting: 15 gas
+- Total: 21 gas
+
+As you can see, the After if statement is 15 gas cheaper than the Before if statement.
+```
+
+code snippet:-
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol#L348C1-L350C10
