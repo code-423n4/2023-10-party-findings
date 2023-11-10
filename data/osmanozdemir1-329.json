@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "osmanozdemir1",
+  "risk": "2",
+  "title": "`emergencyExecute()` functions in the `ETHCrowdfundBase.sol` and the `PartyGovernance.sol` are payable but do not check the `msg.value`",
+  "issueId": 329,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/329"
+}
