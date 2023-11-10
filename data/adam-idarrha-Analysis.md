@@ -1,3 +1,4 @@
+
 | |Title
 |-|:-|
 | [a](#a) | Approach taken in evaluating the codebase |
@@ -6,8 +7,9 @@
 | [d](#d) | Centralization risks |
 | [e](#e) | Documentation analysis | 
 | [f](#f) | Systemic risks |
+| [g](#g) | Architecture recommendation |
 
-### [a] Approach taken in evaluating the codebase
+### <a href="#Summary">[a]</a><a name="#a"> Approach taken in evaluating the codebase
 
 as this codebase has been audited before by C4 two times, i didn't think there would be any low hanging fruits , so i concentrated on assembly implementation and any new mechanisms introduced.
 
@@ -32,6 +34,11 @@ The documentation is well-structured and easy to navigate, but it could benefit 
 ### <a href="#Summary">[f]</a><a name="#f"> Systemic risks
 
 as this protocol is about creating dao's the main risks are going to always be voting accounting and proposals, so the focus of the team should be about carefully introducing new proposals .
+    
+### <a href="#Summary">[g]</a><a name="#g"> Architecture recommendation
+
+the architecture is nice, i liked the separation of functionality through multiple contracts, i would've liked if the party isn't deployed until the crowdfund finalizes, that way if the crowdfund fails we wouldn't have wasted gas on deploying the party.Because even if Authority for a lost crowdfund party mints voting power NFT's to people anybody can burn them because the cowdfund is lost.
+in many places in the codeBase there are unsafe external calls and no protection with nonreentrant or CEI, should implement one of them.
 
 ### Time spent:
 20 hours
