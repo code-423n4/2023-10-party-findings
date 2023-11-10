@@ -302,3 +302,29 @@ https://github.com/code-423n4/2023-10-party/blob/b23c65d62a20921c709582b0b76b387
 
 Consider renaming the `signingThersholdBps` map to `signingThresholdBps` instead.
 
+---
+
+---
+
+# [I-05] PartyGovernance and ProposalExecutionEngine inherit from the same parents in different order
+
+PartyGovernance and ProposalExecutionEngine inherit both from Implementation and ProposalStorage.
+
+However, these two parents are inherited in a different order:
+```Solidity
+// ProposalExecutionEngine.sol:24
+contract ProposalExecutionEngine is
+    IProposalExecutionEngine,
+    Implementation,
+    ProposalStorage,
+```
+
+```Solidity
+// PartyGovernance.sol:23
+abstract contract PartyGovernance is
+    ProposalStorage,
+    Implementation,
+    IERC4906,
+```
+
+This does not currently make a difference in the contract storage because ProposalStorage does not use any layout-assigned storage slot. However, if the team opts in the future to have some, the change may inadvertently break the storage layout compatibility between PartyGovernance and ProposalExecutionEngine  required for proper execution of `delegatecall`s.
