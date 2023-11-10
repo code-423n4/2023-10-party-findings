@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "OffChainSignatureValidator doesn't validate length of signature payload",
+  "issueId": 518,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/518"
+}
