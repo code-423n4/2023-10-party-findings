@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "3docSec",
+  "risk": "2",
+  "title": "Users passing incomplete or wrong ERC-20 \"withdrawTokens\" addresses to \"rageQuit\" will permanently lose their fair share of assets",
+  "issueId": 339,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/339"
+}
