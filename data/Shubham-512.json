@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Shubham",
+  "risk": "2",
+  "title": "Converting voting power to contribution amount & vice versa results in incorrect value leading to loss to user",
+  "issueId": 512,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/512"
+}
