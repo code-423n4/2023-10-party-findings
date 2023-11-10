@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0xadrii",
+  "risk": "2",
+  "title": "Increasing voting power when contributing to a crowdfund does not consider if the delegate has been changed",
+  "issueId": 433,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/433"
+}
