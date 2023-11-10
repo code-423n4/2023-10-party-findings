@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "the sum of voting powers of all members can be more than the new TotalVotingPower after decrease via decreaseTotalVotingPower()",
+  "issueId": 259,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/259"
+}
