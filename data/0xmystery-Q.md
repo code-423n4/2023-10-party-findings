@@ -70,3 +70,90 @@ https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/Initia
         votingPowers = new uint96[](args.recipients.length);
 +        if (votingPowers != args.values.length) revert();
 ```
+## Unsupported `push0` on L2 chain with a version of Solidity >= 0.8.20.
+According to the `Additional Context` provided on the contest page:
+
+```
+The code deployment of the protocol is targeted for two blockchains: Ethereum Mainnet and Base Mainnet.
+```
+
+`push0` is an instruction which pushes the constant value 0 onto the stack and is still not supported by many chains, like Arbitrum and possibly Base. As such, it might be problematic for projects compiled with a version of Solidity >= 0.8.20.
+
+Consider changing Solidity version to 0.8.19 or better yet 0.8.21 on all contracts.
+
+## Incomplete comment
+Consider inserting the missing comment below on struct `BatchContributeArgs` in contract `InitialETHCrowdfund`. 
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L66-L67
+
+```diff
+        // IDs of cards to credit the contributions to. When set to 0, it means
++        // a new one should be minted.
+        uint256[] tokenIds;
+```
+## Incorrect comments
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L201
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L252
+
+```diff
+-    ///         May not revert if any individual contribution fails.
++    ///         May revert if any individual contribution fails.
+```
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L346
+
+```diff
+-    ///         May not revert if any individual refund fails.
++    ///         May revert if any individual refund fails.
+``` 
+## Implement early checks
+Checks should be done earlier when possible. For example, all essential checks in `InitialETHCrowdfund._contribute()` should be refactored as follows: 
+
+https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol#L275-L311
+
+```diff
+    function _contribute(
+        address payable contributor,
+        address delegate,
+        uint96 amount,
+        uint256 tokenId,
+        bytes memory gateData
+    ) private returns (uint96 votingPower) {
+        // Require a non-null delegate.
+        if (delegate == address(0)) {
+            revert InvalidDelegateError();
+        }
+
++        if (disableContributingForExistingCard) {
++            revert ContributingForExistingCardDisabledError();
++        } else if (party.ownerOf(tokenId) != contributor) {
++            revert NotOwnerError(tokenId);
++        }
+
+        // Must not be blocked by gatekeeper.
+        IGateKeeper _gateKeeper = gateKeeper;
+        if (_gateKeeper != IGateKeeper(address(0))) {
+            if (!_gateKeeper.isAllowed(msg.sender, gateKeeperId, gateData)) {
+                revert NotAllowedByGateKeeperError(msg.sender, _gateKeeper, gateKeeperId, gateData);
+            }
+        }
+
+        votingPower = _processContribution(contributor, delegate, amount);
+
+        // OK to contribute with zero just to update delegate.
+        if (amount == 0) return 0;
+
+        if (tokenId == 0) {
+            // Mint contributor a new party card.
+            party.mint(contributor, votingPower, delegate);
+-        } else if (disableContributingForExistingCard) {
+-            revert ContributingForExistingCardDisabledError();
+-        } else if (party.ownerOf(tokenId) == contributor) {
++        } else
+            // Increase voting power of contributor's existing party card.
+            party.increaseVotingPower(tokenId, votingPower);
+-        } else {
+-            revert NotOwnerError(tokenId);
+-        }
+    }
+```
+## Trace Eth amount left in InitialETHCrowdfund.sol
