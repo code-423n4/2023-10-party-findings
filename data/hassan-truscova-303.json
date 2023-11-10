@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "hassan-truscova",
+  "risk": "2",
+  "title": " If the contract was bid on before the NFT was gifted to the contract, lastBid will not be totalContributions",
+  "issueId": 303,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/303"
+}
