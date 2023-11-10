@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "osmanozdemir1",
+  "risk": "2",
+  "title": "A batch contribution that was supposed to finalize the crowdfunding may revert and not finalize it",
+  "issueId": 319,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/319"
+}
