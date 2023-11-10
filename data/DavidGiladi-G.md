@@ -6,7 +6,6 @@
 |[G-2] Inefficient use of abi.encode() | [Inefficient use of abi.encode()](#inefficient-use-of-abiencode) | 1 | 100 |
 |[G-3] Multiplication and Division by 2 Should use in Bit Shifting | [Multiplication and Division by 2 Should use in Bit Shifting](#multiplication-and-division-by-2-should-use-in-bit-shifting) | 2 | 40 |
 |[G-4] Check Arguments Early | [Check Arguments Early](#check-arguments-early) | 9 | - |
-|[G-11] Cache External Calls in Loops | [Cache External Calls in Loops](#cache-external-calls-in-loops) | 5 | 500 |
 |[G-5] Optimal State Variable Order | [Optimal State Variable Order](#optimal-state-variable-order) | 1 | 5000 |
 |[G-6] Redundant state variable getters | [Redundant state variable getters](#redundant-state-variable-getters) | 1 | - |
 |[G-7] Superfluous event fields | [Superfluous event fields](#superfluous-event-fields) | 1 | - |
