@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "seerether",
+  "risk": "3",
+  "title": "using == rather than <= for the rageQuit timestamp check is vulnerable to manipulation in the same block. ",
+  "issueId": 291,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/291"
+}
