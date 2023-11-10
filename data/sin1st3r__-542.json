@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "sin1st3r__",
+  "risk": "2",
+  "title": "`decreaseVotingPower()` can be front-ran by an attacker to claim an amount of assets from the `TokenDistributor` more than he should be able to claim or withdraw more assets than he should be able to claim through `rageQuit()`",
+  "issueId": 542,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/542"
+}
