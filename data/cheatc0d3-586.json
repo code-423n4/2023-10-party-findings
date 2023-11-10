@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "cheatc0d3",
+  "risk": "2",
+  "title": "In `_executeSetSignatureValidator`, validate `data.signatureHash` and `data.signatureValidator` for non-zero values.",
+  "issueId": 586,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/586"
+}
