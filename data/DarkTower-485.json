@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "DarkTower",
+  "risk": "2",
+  "title": "Excess ETH Contribution is lost during the `PartyGovernanceNFT::mint()` function",
+  "issueId": 485,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/485"
+}
