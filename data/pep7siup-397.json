@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "pep7siup",
+  "risk": "2",
+  "title": "Missing onlyDelegateCall protection in PartyGovernance, exposing implementation contract to selfdestruct",
+  "issueId": 397,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/397"
+}
