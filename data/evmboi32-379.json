@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "evmboi32",
+  "risk": "2",
+  "title": "A ```fundingSplitRecipient``` can lose money if ```emergencyExecute``` is called on crowdfund before ```sendFundingSplit```",
+  "issueId": 379,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/379"
+}
