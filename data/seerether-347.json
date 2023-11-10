@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "seerether",
+  "risk": "2",
+  "title": "accept() does allow voting on proposals that are already in the Passed or Ready state. This could potentially allow changing vote totals after a proposal has already passed",
+  "issueId": 347,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/347"
+}
