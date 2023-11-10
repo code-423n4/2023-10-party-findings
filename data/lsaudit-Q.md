@@ -126,7 +126,7 @@ In function `_initialize()`, there should be additional check which requires `fu
 uint256 acceptanceRatio = (totalVotes * 1e4) / totalVotingPower;
 ```
 
-Since `acceptanceRatio` is `uint256` and `totalVotes` is `uint96`, we can safely assume, that `(totalVotes * 1e4) / totalVotingPower` will never exceed `type(uint40).max` and the result will fit in `uint256`.
+Since `acceptanceRatio` is `uint256` and `totalVotes` is `uint96`, we can safely assume, that `(totalVotes * 1e4) / totalVotingPower` will never exceed `type(uint256).max` and the result will fit in `uint256`.
 However, the problem occurs with multiplication: since `totalVotes` is `uint96` - `(totalVotes * 1e4)` will also be treated as `uint96` - and this might overflow.
 
 The safest way to avoid the risk of overflow, would be to cast `totalVotes` to `uint256` before doing the multiplication:
