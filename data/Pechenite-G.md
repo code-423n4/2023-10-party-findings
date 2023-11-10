@@ -1,11 +1,11 @@
-### [GAS-01] Do-While loops are cheaper than for loops
-Using `do-while` loops instead of `for` loops can be more gas-efficient.
-Even if you add an `if` condition to account for the case where the loop doesn't execute at all, a `do-while` loop can still be cheaper in terms of gas.
+### [GAS-01] Utilizing Do-While Loops for Enhanced Gas Efficiency
+Opting for `do-while` loops over `for` loops can yield increased gas efficiency.
+Even when incorporating an `if` condition to cater to situations where the loop may not execute at all, a `do-while` loop can still prove to be more economical in terms of gas consumption.
 
+Gas Conservation per Instance: Approximately 255 units (Total Savings: Approximately 2,550 units)
 
-Gas saved per Instance: ~255 *(Total: ~2,550)*
 <details>
-<summary><i>There are 10 instances of this issue:</i></summary>
+<summary><i>This issue manifests in 10 instances:</i></summary>
 
 ```solidity
 📁 File: contracts/crowdfund/InitialETHCrowdfund.sol
@@ -18,14 +18,14 @@ Gas saved per Instance: ~255 *(Total: ~2,550)*
 
 379:         for (uint i = 0; i < authoritiesLength - 1; ++i) { 
 ```
-[211](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L211-L211), [260](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L260-L260), [357](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L357-L357), [379](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L379-L379)
+[211 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L211-L211), [260 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L260-L260), [357 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L357-L357), [379 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L379-L379)
 
 ```solidity
 📁 File: contracts/party/PartyGovernance.sol
 
 305:         for (uint256 i = 0; i < govOpts.hosts.length; ++i) { 
 ```
-[305](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol/#L305-L305)
+[GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol/#L305-L305)
 
 ```solidity
 📁 File: contracts/party/PartyGovernanceNFT.sol
@@ -40,19 +40,18 @@ Gas saved per Instance: ~255 *(Total: ~2,550)*
 
 408:             for (uint256 i; i < withdrawTokens.length; ++i) { 
 ```
-[102](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L102-L102), [272](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L272-L272), [378](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L378-L378), [391](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L391-L391), [408](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L408-L408)
+[211- GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L102-L102), [272](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L272-L272), [378 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L378-L378), [391 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L391-L391), [408 - GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L408-L408)
 
 </details>
 
 ---
 
-### [GAS-02] Use of `emit` inside a loop
-Emitting an event inside a loop performs a LOG op N times, where N is the loop length. Consider refactoring the code to emit the event only once at the end of loop. **Gas savings should be multiplied by the average loop length.**
+### [GAS-02] Employing `emit` within a Loop
+Issuing an event within a loop triggers a LOG operation N times, where N corresponds to the loop's length. Consider revising the code to emit the event only once upon loop completion. **The potential gas savings should be multiplied by the average loop length.**
 
+Gas Savings per Instance: Approximately 375 units (Total Savings: Approximately 750 units)
 
-Gas saved per Instance: ~375 *(Total: ~750)*
-
-<i>There are 2 instaces of this issue:</i>
+<i>This issue is observed in 2 instances:</i>
 
 ```solidity
 📁 File: contracts/party/PartyGovernanceNFT.sol
@@ -90,17 +89,17 @@ Gas saved per Instance: ~375 *(Total: ~750)*
 300:             emit Burn(msg.sender, tokenId, votingPower);
 301:         }
 ```
-[272](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L272-L301)
+[GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L272-L301)
 
 ---
 
-### [GAS-03] Counting down in `for` statements is more gas efficient
-Counting down is more gas efficient than counting up because neither we are making zero variable to non-zero variable and also we will get gas refund in the last transaction when making non-zero to zero variable. [More info](https://solodit.xyz/issues/g-02-counting-down-in-for-statements-is-more-gas-efficient-code4rena-pooltogether-pooltogether-git)
+### [GAS-03] Opting for Countdown in `for` Statements for Enhanced Gas Efficiency
+Utilizing countdown is more gas-efficient than counting up because it avoids the transition from a zero variable to a non-zero variable and also allows for gas refunds during the last transaction when transitioning from a non-zero variable to zero. [More information](https://solodit.xyz/issues/g-02-counting-down-in-for-statements-is-more-gas-efficient-code4rena-pooltogether-pooltogether-git)
 
+Gas Conservation per Instance: Approximately 16 units (Total Savings: Approximately 160 units)
 
-Gas saved per Instance: ~16 *(Total: ~160)*
 <details>
-<summary><i>There are 10 instances of this issue:</i></summary>
+<summary><i>This issue arises in 10 instances:</i></summary>
 
 ```solidity
 📁 File: contracts/crowdfund/InitialETHCrowdfund.sol
@@ -113,31 +112,4 @@ Gas saved per Instance: ~16 *(Total: ~160)*
 
 379:         for (uint i = 0; i < authoritiesLength - 1; ++i) { 
 ```
-[211](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L211-L211), [260](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L260-L260), [357](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L357-L357), [379](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L379-L379)
-
-```solidity
-📁 File: contracts/party/PartyGovernance.sol
-
-305:         for (uint256 i = 0; i < govOpts.hosts.length; ++i) { 
-```
-[305](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol/#L305-L305)
-
-```solidity
-📁 File: contracts/party/PartyGovernanceNFT.sol
-
-102:             for (uint256 i; i < authorities.length; ++i) { 
-
-272:         for (uint256 i; i < tokenIds.length; ++i) { 
-
-378:             for (uint256 i; i < withdrawTokens.length; ++i) { 
-
-391:                 for (uint256 j; j < tokenIds.length; ++j) { 
-
-408:             for (uint256 i; i < withdrawTokens.length; ++i) { 
-```
-[102](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L102-L102), [272](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L272-L272), [378](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L378-L378), [391](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L391-L391), [408](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol/#L408-L408)
-
-</details>
-
----
-
+[GitHub Link](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol/#L211-L211)
