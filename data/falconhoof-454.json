@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "falconhoof",
+  "risk": "2",
+  "title": "Lack of fundingSplitBps validation can DOS contributions",
+  "issueId": 454,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/454"
+}
