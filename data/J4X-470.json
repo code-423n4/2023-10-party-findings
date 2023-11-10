@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "J4X",
+  "risk": "3",
+  "title": "Increasing of totalVotingPower during crowdfund can lead to users losing funds.",
+  "issueId": 470,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/470"
+}
