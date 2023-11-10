@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "D1r3Wolf",
+  "risk": "2",
+  "title": "Missing lower boundary check for totalVotingPower in PartyGovernanceNFT.decreaseTotalVotingPower function",
+  "issueId": 476,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/476"
+}
