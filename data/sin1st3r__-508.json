@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "sin1st3r__",
+  "risk": "3",
+  "title": "Stale `preciousListHash` state variable permanently prevents a party from executing non-unanimous arbitrary call proposals and poses a high security risk.",
+  "issueId": 508,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/508"
+}
