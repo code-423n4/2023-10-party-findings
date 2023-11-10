@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "klau5",
+  "risk": "2",
+  "title": "_hostsAccepted - If more than numHosts of Hosts vote, it will not be executed immediately",
+  "issueId": 322,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/322"
+}
