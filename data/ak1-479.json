@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "ak1",
+  "risk": "2",
+  "title": "function : `decreaseVotingPower`  incorrectly updates the delegate voting power. it decreases the owner voting power only.",
+  "issueId": 479,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/479"
+}
