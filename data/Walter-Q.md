@@ -6,7 +6,7 @@ https://github.com/PartyDAO/party-protocol/blob/37dae4292dde2547a3b1ced8a041f926
 https://github.com/PartyDAO/party-protocol/blob/37dae4292dde2547a3b1ced8a041f926e1b37d58/contracts/crowdfund/ETHCrowdfundBase.sol#L266
 https://github.com/PartyDAO/party-protocol/blob/37dae4292dde2547a3b1ced8a041f926e1b37d58/contracts/crowdfund/ETHCrowdfundBase.sol#L287
 3) ## few wei will be lost on refund due to small calculation problem
-it is a small difference between the actual refund and the current refund of about 4 wei in case the crowdfund was created with a fundingSplitRecipient, fundingSplitBps and exchangeRateBps
+it is a small difference between the actual refund and the current refund of about few wei in case the crowdfund was created with a fundingSplitRecipient, fundingSplitBps and exchangeRateBps
 ### Poc
 ```
 function test_powerToContribution(uint256 commissions,uint256 exchangeRateBpss)public{
