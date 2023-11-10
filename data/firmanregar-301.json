@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "firmanregar",
+  "risk": "3",
+  "title": "Readonly-reentrancy in InitialETHCrowdfund._contribute(address,address,uint96,uint256,bytes) ",
+  "issueId": 301,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/301"
+}
