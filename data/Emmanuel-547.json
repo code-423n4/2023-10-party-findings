@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Emmanuel",
+  "risk": "2",
+  "title": "Increasing or decreasing totalVotingPower or individualVotingPower will affect current distributions for users that have not yet claimed. ",
+  "issueId": 547,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/547"
+}
