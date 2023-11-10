@@ -7,7 +7,7 @@
 ### **2. Architecture and Codebase quality analysis**
 - The protocol allows users to create and join parties by contributing to a crowdfund. Once the crowdfund is successful, the party is created and members are minted NFTs that represent their voting power. Members can then create proposals and vote on their execution.
 - In audit scope, the contracts comprises
-   > crowdFund creation contracts - [InitialETHCrowdfund.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol), [ETHCrowdfundBase.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol);
+   > CrowdFund creation and modification contracts - [InitialETHCrowdfund.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/InitialETHCrowdfund.sol), [ETHCrowdfundBase.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/crowdfund/ETHCrowdfundBase.sol);
     
    > Party setup, modifications and proposal creation contracts - [PartyGovernance.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernance.sol), [PartyGovernanceNFT.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/party/PartyGovernanceNFT.sol);
     
@@ -15,9 +15,9 @@
     
    > Two new proposal contract types - [SetGovernanceParameterProposal.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/proposals/SetGovernanceParameterProposal.sol)  & [SetSignatureValidatorProposal.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/proposals/SetSignatureValidatorProposal.sol);
     
-   > the signature validator contract - [OffChainSignatureValidator.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/signature-validators/OffChainSignatureValidator.sol);
+   > Signature validator contract - [OffChainSignatureValidator.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/signature-validators/OffChainSignatureValidator.sol);
     
-   > and the utility contract - [Implementation.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/utils/Implementation.sol).
+   > and a utility contract - [Implementation.sol](https://github.com/code-423n4/2023-10-party/blob/main/contracts/utils/Implementation.sol).
 
 - The protocol also makes use of solmate's ERC721 contract, OZ's IERC2981 interface as well as being designed to follow certain EIP standards.
 - The codebase appears to be well-written and well structured. With a few exceptions, the function sizes were compact and easy to understand. 
@@ -34,5 +34,7 @@
 ### **4. Conclusion**
 - The Party protocol provides an open protocol for group coordination, formation and distribution with the goal of making Ethereum multiplayer. The codebase is solid, well commented and documented, so devs and users will find it quite to easy understand. We recommend taking into consideration discovered issues and mitigating them, implementing constant upgrades and audits to keep the protocol always secure.
 
+
+
 ### Time spent:
-024 hours
+24 hours
