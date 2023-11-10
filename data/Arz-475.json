@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Arz",
+  "risk": "2",
+  "title": "Some arbitrary proposal calls will fail because executeProposal() in ProposalExecutionEngine is not payable",
+  "issueId": 475,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/475"
+}
