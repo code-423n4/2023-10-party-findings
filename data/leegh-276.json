@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "leegh",
+  "risk": "3",
+  "title": "Party member could lose their share of a token if they forget to withdraw that token in rage quit.",
+  "issueId": 276,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/276"
+}
