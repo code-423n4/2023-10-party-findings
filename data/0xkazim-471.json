@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "0xkazim",
+  "risk": "3",
+  "title": "wrong check in `batchContributeFor ` always leads to revert and loose of ETH",
+  "issueId": 471,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/471"
+}
