@@ -1,0 +1,8 @@
+{
+  "contest": 301,
+  "handle": "Bauchibred",
+  "risk": "2",
+  "title": "Finalizing crowdfunds would never work in some instances due to how `minTotalContributions` & `maxTotalContributions` are initialized",
+  "issueId": 262,
+  "issueUrl": "https://github.com/code-423n4/2023-10-party-findings/issues/262"
+}
