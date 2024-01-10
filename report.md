@@ -2783,7 +2783,7 @@ Contributions during the Crowdfund phase are a primary means of creating and joi
 
 The Crowdfund phase focuses on forming and financing Parties, while the Governance phase involves decision-making and action execution as a group.
 
-![PartyOverview1](https://github-production-user-asset-6210df.s3.amazonaws.com/135237830/288559561-a83fdb93-8757-4a92-a770-c7b01661b563.png)
+*Note: To review the diagrams provided throughout the remainder of this report, see [here](https://github.com/code-423n4/2023-10-party-findings/issues/243).*
 
 ## 2. Main Contracts and Their Analysis Through Diagrams
 
@@ -2791,43 +2791,23 @@ The Crowdfund phase focuses on forming and financing Parties, while the Governan
 
 **InitialETHCrowdfund.sol** - The contract it is used to conduct an initial fundraising for creating new **parties** or **groups**.
 
-![InitialETHCrowdfund](https://gist.github.com/assets/135237830/3003aaf9-8ef9-4a6c-89ed-3533333e9662.png)
-
 **ETHCrowdfundBase.sol** - The base contract for **InitialETHCrowdfund**
-
-![PartyETHCrowdfundBase](https://gist.github.com/assets/135237830/058e3591-cfba-4369-b6ec-8a1272e4fcb7.png)
 
 **PartyGovernance.sol** - This contract serves as the foundation for the Party contract within the protocol. It encapsulates the essential governance logic governing the behavior of parties.
 
-![PartyPartyGovernance](https://gist.github.com/assets/135237830/1c3f1d11-1a66-47f6-b62d-f5e3ebb56a4e.png)
-
 **PartyGovernanceNFT.sol** - This contract serves as the foundational logic for tokens within the Party protocol, and it is inherited by the Party contract, which is the core component of the protocol.
-
-![PartyPartyGovernance](https://gist.github.com/assets/135237830/f5e83e4c-0bbb-4dd0-934b-832d2abd9f51.png)
 
 **ProposalExecutionEngine.sol** - This contract is invoked via `delegatecall` by parties to handle the execution logic associated with proposals. Parties also implement a fallback function that performs a static delegate call to interact with the `ProposalExecutionEngine`.
 
-![ProposalExecutionEngine](https://gist.github.com/assets/135237830/ec219415-748c-4b06-a4f0-a0c599b2b0a2.png)
-
 **ProposalStorage.sol** - This contract facilitates communication and data management between the `PartyGovernance` and `ProposalExecutionEngine` contracts.
-
-![ProposalStorage](https://gist.github.com/assets/135237830/0790a26c-f86b-4e2f-9098-dfb240003e0a.png)
 
 **SetGovernanceParameterProposal.sol** - A new proposal type that allows setting governance parameters for the party.
 
-![ProposalStorage](https://gist.github.com/assets/135237830/dd2963b8-45c2-4135-8e9a-167ee5b6921f.png)
-
 **SetSignatureValidatorProposal.sol** - Abstract contract that handles proposals related to setting or updating signature validators for specific signature hashes.
-
-![SetSignatureValidatorProposal](https://gist.github.com/assets/135237830/c2be1721-ab73-4c47-ae19-5f474d003a25.png)
 
 **OffChainSignatureValidator.sol** - This contract provides a mechanism for parties in the Party protocol to validate off-chain signatures. It checks the validity of the signature, ensures the signer is a member of the party with sufficient voting power, and applies a customizable signing threshold for added security.
 
-![OffChainSignatureValidator](https://gist.github.com/assets/135237830/73f904df-c995-401c-8032-3421d69280a0.png)
-
 **Implementation.sol** - This contract serves as a utility for implementation contracts utilized through a proxy. It offers helper functions designed to facilitate the interaction between implementation contracts and their proxies.
-
-![Implementation](https://gist.github.com/assets/135237830/554a1af6-8753-4190-8b79-dfcae584e5b7.png)
 
 ## 3. Approach taken in evaluating the codebase
 
@@ -2844,8 +2824,6 @@ The Crowdfund phase focuses on forming and financing Parties, while the Governan
 ## 4. Party Protocol: Architecture
 
 The architecture is designed to enable the decentralized creation and management of groups (Parties) through participation in crowdfunds. Each type of crowdfund has specific logic for its purpose, and the Party contract acts as the core for governance and party asset management.
-
-![PartyArquitectura](https://gist.github.com/assets/135237830/fbc7fbc7-54a4-4087-84ab-0a649939ea90.png)
 
 There is always room for improvements and optimizations in the architectural design.
 
