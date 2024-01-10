@@ -559,7 +559,7 @@ Token-Transfer
 **[deth (warden) commented](https://github.com/code-423n4/2023-10-party-findings/issues/533#issuecomment-1822478383):**
 > I would like to point out that a majority attack has been acknowledged in a previous [c4 finding](https://github.com/code-423n4/2023-04-party-findings/issues/25#issuecomment-1532040736).
 > 
-> #124 was judged as invalid because it was reported in a previous [c4 finding as well](https://github.com/code-423n4/2023-05-party-findings/issues/19).
+> Issue #124 was judged as invalid because it was reported in a previous [c4 finding as well](https://github.com/code-423n4/2023-05-party-findings/issues/19).
 
 **[0xStalin (warden) commented](https://github.com/code-423n4/2023-10-party-findings/issues/533#issuecomment-1823247602):**
 > @deth - The previous C4 finding is about how an attacker can (under some circumstances/conditions) execute a flash loan attack to get 51% voting power and (potentially) create proposals and get them to pass if no host has vetoed on them.
